@@ -18,6 +18,12 @@ class MySQLService:
     def close(self):
         self.connection.close()
 
+    def __enter__(self):
+        self.connect()
+    
+    def __exit__(self, type, value, traceback):
+        self.close()
+
     def get_all(self, table_name):
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT * FROM {table_name}")
