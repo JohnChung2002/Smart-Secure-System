@@ -39,9 +39,9 @@ class MySQLService:
         cursor.close()
         return result
 
-    def insert(self, table_name, data):
+    def insert(self, table_name, field_names, identifiers, data):
         cursor = self.connection.cursor()
-        cursor.execute(f"INSERT INTO {table_name} (name, email, password) VALUES (%s, %s, %s)", data)
+        cursor.execute(f"INSERT INTO {table_name} ({', '.join(field_names)}) VALUES ({', '.join(identifiers)})", data)
         self.connection.commit()
         cursor.close()
 
