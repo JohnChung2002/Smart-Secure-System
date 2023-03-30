@@ -16,7 +16,8 @@ class MySQLService:
         )
 
     def close(self):
-        self.connection.close()
+        if self.connection is not None:
+            self.connection.close()
 
     def __enter__(self):
         self.connect()
