@@ -3,7 +3,8 @@ from services.mysql_service import MySQLService
 import serial
 
 app = Flask(__name__)
-ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
 
 #Dashboard
