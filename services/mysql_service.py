@@ -6,6 +6,7 @@ class MySQLService:
         self.user = user
         self.password = password
         self.database = database
+        self.connection = None
 
     def connect(self):
         self.connection = mysql.connector.connect(
@@ -26,6 +27,7 @@ class MySQLService:
         self.close()
 
     def get_all(self, table_name):
+        self.connect()
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT * FROM {table_name}")
         result = cursor.fetchall()
@@ -33,6 +35,7 @@ class MySQLService:
         return result
 
     def get_by_id(self, table_name, id):
+        self.connect()
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT * FROM {table_name} WHERE id = {id}")
         result = cursor.fetchone()
@@ -40,18 +43,21 @@ class MySQLService:
         return result
 
     def insert(self, table_name, field_names, identifiers, data):
+        self.connect()
         cursor = self.connection.cursor()
         cursor.execute(f"INSERT INTO {table_name} ({', '.join(field_names)}) VALUES ({', '.join(identifiers)})", data)
         self.connection.commit()
         cursor.close()
 
     def update(self, table_name, data):
+        self.connect()
         cursor = self.connection.cursor()
         cursor.execute(f"UPDATE {table_name} SET name = %s, email = %s, password = %s WHERE id = %s", data)
         self.connection.commit()
         cursor.close()
 
     def delete(self, table_name, id):
+        self.connect()
         cursor = self.connection.cursor()
         cursor.execute(f"DELETE FROM {table_name} WHERE id = {id}")
         self.connection.commit()

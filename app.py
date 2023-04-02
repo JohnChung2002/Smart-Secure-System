@@ -33,7 +33,7 @@ def request_has_connection():
 @app.before_request
 def get_request_connection():
     if not request_has_connection():
-        g.dbconn = MySQLService('localhost', 'pi', 'pi', 'sensor_db').connect()
+        g.dbconn = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
 
 @app.teardown_request
 def close_db_connection(ex):
