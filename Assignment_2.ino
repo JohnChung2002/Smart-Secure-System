@@ -3,7 +3,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
-#include <SharpIR.h>
 
 #define BUTTON_PIN 1
 
