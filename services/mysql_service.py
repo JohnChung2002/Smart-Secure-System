@@ -28,7 +28,7 @@ class MySQLService:
         self.close()
 
     def join_param_string(param_dict: dict):
-        return ', '.join([('%s = %s' %(key, value)) for key, value in param_dict.items()])
+        return ', '.join([('%%s = %%s' %(key, value)) for key, value in param_dict.items()])
 
     def get_all(self, table_name: str):
         cursor = self.connection.cursor()
