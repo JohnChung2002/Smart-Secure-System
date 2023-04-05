@@ -38,20 +38,19 @@ def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         last_unlock = db.get_last_entry("unlock_logs", "unlock_id")
-        print(last_unlock)
-        #db.insert("in_out_logs", )
+        db.insert("in_out_logs", ["unlock_id", "type", "weight", "height", "bmi"], last_unlock[0] | sensor_data)
 
 def update_alarm_status(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.update("config", {"value": "%s"}, {"config": "%s"}, ["alarm_status", sensor_data[1]])
+        db.update("config", ["value", "config"], ["alarm_status"], [sensor_data[1]])
 
 def insert_unlock_attempt(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     if len(sensor_data) == 3:
         sensor_data.append(None)
     with db:
-        db.insert("unlock_logs", {"type": "%s", "status": "%s", "user_id": "%s"}, [sensor_data[1], sensor_data[2], sensor_data[3]])
+        db.insert("unlock_logs", ["type", "status", "user_id"], [sensor_data[1], sensor_data[2], sensor_data[3]])
 
 #Dashboard
 @app.route('/')

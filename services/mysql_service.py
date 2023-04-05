@@ -28,7 +28,7 @@ class MySQLService:
         self.close()
 
     def join_param_string(param_dict: dict):
-        return ', '.join([('%s = %s' %(key, value)) for key, value in param_dict.items()])
+        return ', '.join([('%s = %%s' %(key)) for key in param_dict.keys()])
 
     def get_all(self, table_name: str):
         cursor = self.connection.cursor()
@@ -44,9 +44,9 @@ class MySQLService:
         cursor.close()
         return result
 
-    def insert(self, table_name: str, fields: dict, data: list):
+    def insert(self, table_name: str, fields: list, data: list):
         cursor = self.connection.cursor()
-        cursor.execute(f"INSERT INTO {table_name} ({', '.join(list(fields.keys()))}) VALUES ({', '.join(list(fields.values()))})", data)
+        cursor.execute(f"INSERT INTO {table_name} ({', '.join(fields)}) VALUES ({', '.join(['%s'] * len(fields))})", data)
         self.connection.commit()
         cursor.close()
 
