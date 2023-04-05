@@ -25,7 +25,7 @@ def read_serial_input():
 
 
 def check_if_card_exists(card_id):
-    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         result = db.get_by_id("user_details", {"card_id": "%%s"}, [card_id])
         if (result is None):
@@ -35,21 +35,21 @@ def check_if_card_exists(card_id):
             ser.write(b"Exists|%s|%s" %(result[0], result[1], result[6]))
 
 def insert_entry_exit(sensor_data):
-    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.insert()
+        db.insert("in_out_logs", )
 
 def update_alarm_status(sensor_data):
-    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.update("config", {"value": "%%s"}, {"config": "%%s"}, ["alarm_status", sensor_data[1]])
+        db.update("config", {"value": "%s"}, {"config": "%s"}, ["alarm_status", sensor_data[1]])
 
-def insert_unlock_attempt(sensor_data):
-    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+def insert_unlock_attempt(sensor_data):d
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     if len(sensor_data) == 3:
         sensor_data.append(None)
     with db:
-        db.insert("unlock_logs", {"type": "%%s", "status": "%%s", "%%user_id": "%%s"}, [sensor_data[1], sensor_data[2], sensor_data[3]])
+        db.insert("unlock_logs", {"type": "%s", "status": "%s", "user_id": "%s"}, [sensor_data[1], sensor_data[2], sensor_data[3]])
 
 #Dashboard
 @app.route('/')
@@ -78,7 +78,7 @@ def request_has_connection():
 @app.before_request
 def get_request_connection():
     if not request_has_connection():
-        g.dbconn = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+        g.dbconn = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
 
 @app.teardown_request
 def close_db_connection(ex):
@@ -90,4 +90,4 @@ sensor_thread.daemon = True
 sensor_thread.start()
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
