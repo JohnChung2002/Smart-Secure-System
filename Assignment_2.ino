@@ -236,7 +236,7 @@ void startInOutScan() {
   while (entryExitStatus != "") {
     entryExitStatus = checkInOut();
     if (entryExitStatus == "Entry" || entryExitStatus == "Exit") {
-      serialOutput = entryExitStatus + "|" + currentUserInfo[1] + "|" + String(height) + "|" + String(weight) + "|" + String(bmi);
+      serialOutput = entryExitStatus + "|" + String(weight) + "|" + String(height) + "|" + String(bmi);
       Serial.println(serialOutput);
     }
   }
