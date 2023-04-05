@@ -6,14 +6,16 @@ import serial
 latest_sensor_data = []
 
 app = Flask(__name__)
-ser = serial.Serial('/dev/ttyACM1', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
 
 def read_serial_input():
     while True:
         if (ser.in_waiting > 0):
-            input = ser.readline().decode('utf-8').rstrip().split("|")
+            temp = ser.readline()
+            print(temp)
+            input = temp.decode('utf-8').rstrip().split("|")
             if (input[0] == "Entry" or input[0] == "Exit"):
                 insert_entry_exit(input)
             if (input[0] == "Alarm"):
