@@ -22,6 +22,9 @@ def read_serial_input():
                 insert_unlock_attempt(input)
             if (input[0] == "Request"):
                 check_if_card_exists(input[1])
+            if (input[0] == "Approval"):
+                print("Yes")
+                #update_approval(input[1])
 
 
 def check_if_card_exists(card_id):
