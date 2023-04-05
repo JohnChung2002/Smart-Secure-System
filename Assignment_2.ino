@@ -3,6 +3,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
+#include <vector>
 
 #define BUTTON_PIN 1
 
@@ -42,7 +43,7 @@ bool waitingForCard = false;
 bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
-String currentUserInfo[4];
+vector currentUserInfo[4];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -192,20 +193,19 @@ bool getID() {
   return true;
 }
 
-String* splitStringByDelimiter(String input, String delimiter, int size) {
-  String tokens[size];
+vector<String> splitStringByDelimiter(String input, String delimiter) {
+  vector<String> tokens;
   String token;
-  int i = 0;
   while ((token = input.substring(0, input.indexOf(delimiter))) != "") {
-    tokens[i] = token;
+    tokens.push_back(token);
     input = input.substring(input.indexOf(delimiter) + 1);
-    i++;
   }
   return tokens;
 }
 
 bool checkIDInDatabase() {
-  Serial.println(tagID);
+  serialOutput = "Request|" + tagID;
+  Serial.println(serialOutput);
   long startTime = millis();
   while (Serial.available() == 0) {
     if (!waitingForInput) {
@@ -218,7 +218,7 @@ bool checkIDInDatabase() {
         waitingForInput = false;
         return false;
       } else {
-
+        currentUserInfo = splitStringByDelimiter(serialInput, "|", 4);
         waitingForInput = false;
         return true;
       }
