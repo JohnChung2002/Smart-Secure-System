@@ -37,14 +37,16 @@ def check_if_card_exists(card_id):
 def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.insert("in_out_logs", )
+        last_unlock = db.get_last_entry("unlock_logs", "unlock_id")
+        print(last_unlock)
+        #db.insert("in_out_logs", )
 
 def update_alarm_status(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         db.update("config", {"value": "%s"}, {"config": "%s"}, ["alarm_status", sensor_data[1]])
 
-def insert_unlock_attempt(sensor_data):d
+def insert_unlock_attempt(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     if len(sensor_data) == 3:
         sensor_data.append(None)

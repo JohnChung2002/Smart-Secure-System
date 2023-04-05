@@ -62,3 +62,10 @@ class MySQLService:
         cursor.execute(f"DELETE FROM {table_name} WHERE {self.join_param_string(primary_fields)}", data)
         self.connection.commit()
         cursor.close()
+
+    def get_last_entry(self, table_name: str, primary_field: str):
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT * FROM {table_name} ORDER BY {primary_field} DESC LIMIT 1")
+        result = cursor.fetchone()
+        cursor.close()
+        return result
