@@ -95,7 +95,7 @@ bool waitForRemoteApprove() {
   long startTime = millis();
   while (Serial.available() == 0) {
     if (!waitingForInput) {
-      Serial.println("Wait for approval..");
+      Serial.println("Approval");
       lcd.clear();
       lcd.print("Wait for approval..");
       waitingForInput = true;
