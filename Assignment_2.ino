@@ -193,12 +193,17 @@ bool getID() {
 }
 
 void splitStringUserInfo(String input) {
-  int i = 0;
-  String token;
-  while ((token = input.substring(0, input.indexOf("|"))) != "") {
-    currentUserInfo[i] = token;
-    input = input.substring(input.indexOf("|") + 1);
-    i++;
+  int currentIndex = 0;  // Initialize the current index to zero
+  while (input.length() > 0) {  // Continue until the input string is empty
+    int delimiterIndex = input.indexOf("|");  // Find the index of the next delimiter
+    if (delimiterIndex == -1) {  // If no delimiter was found, use the remainder of the string
+      currentUserInfo[currentIndex] = input;
+      input = "";  // Clear the input string to exit the loop
+    } else {  // If a delimiter was found, extract the token and update the input string
+      currentUserInfo[currentIndex] = input.substring(0, delimiterIndex);
+      input = input.substring(delimiterIndex + 1);
+    }
+    currentIndex++;  // Increment the current index to move to the next element in the array
   }
 }
 
