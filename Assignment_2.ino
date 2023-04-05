@@ -208,7 +208,6 @@ bool checkIDInDatabase() {
   long startTime = millis();
   while (Serial.available() == 0) {
     if (!waitingForInput) {
-      Serial.println("Checking Database..");
       waitingForInput = true;
     }
     serialInput = Serial.readString();
