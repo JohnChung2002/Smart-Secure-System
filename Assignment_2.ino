@@ -193,14 +193,14 @@ bool getID() {
   return true;
 }
 
-vector<String> splitStringByDelimiter(String input, String delimiter) {
-  vector<String> tokens;
+void splitStringUserInfo(String input) {
+  int i = 0;
   String token;
-  while ((token = input.substring(0, input.indexOf(delimiter))) != "") {
-    tokens.push_back(token);
-    input = input.substring(input.indexOf(delimiter) + 1);
+  while ((token = input.substring(0, input.indexOf("|"))) != "") {
+    currentUserInfo[i] = token;
+    input = input.substring(input.indexOf("|") + 1);
+    i++;
   }
-  return tokens;
 }
 
 bool checkIDInDatabase() {
@@ -218,7 +218,7 @@ bool checkIDInDatabase() {
         waitingForInput = false;
         return false;
       } else {
-        currentUserInfo = splitStringByDelimiter(serialInput, "|", 4);
+        splitStringUserInfo(serialInput);
         waitingForInput = false;
         return true;
       }
