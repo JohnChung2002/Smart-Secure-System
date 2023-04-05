@@ -48,15 +48,6 @@ user_details
 
 CREATE DATABASE IF NOT EXISTS `smart_lock_system`;
 USE `smart_lock_system`;
-CREATE TABLE IF NOT EXISTS `user_accounts` (
-  `user_id` INT(8) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` ENUM("Admin", "User") NOT NULL DEFAULT "User",
-  `account_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`)
-  FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
-);
 CREATE TABLE IF NOT EXISTS `user_details` (
   `user_id` INT(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -67,12 +58,21 @@ CREATE TABLE IF NOT EXISTS `user_details` (
   `type` ENUM("Human", "Pet") NOT NULL DEFAULT "User",
   PRIMARY KEY (`user_id`)
 );
+CREATE TABLE IF NOT EXISTS `user_accounts` (
+  `user_id` INT(8) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` ENUM("Admin", "User") NOT NULL DEFAULT "User",
+  `account_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `user_details`(`user_id`)
+);
 CREATE TABLE IF NOT EXISTS `unlock_logs` (
   `unlock_id` INT(8) NOT NULL AUTO_INCREMENT,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` ENUM("Entry", "Exit") NOT NULL,
   `status` ENUM("Success", "Failed", "Pending") NOT NULL DEFAULT "Pending",
-  `user_id` INT(8) NOT NULL,
+  `user_id` INT(8),
   PRIMARY KEY (`unlock_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
 );
