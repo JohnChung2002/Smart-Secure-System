@@ -24,18 +24,19 @@ def read_serial_input():
                 check_if_card_exists(input[1])
             if (input[0] == "Approval"):
                 print("Yes")
-                #update_approval(input[1])
 
 
 def check_if_card_exists(card_id):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        result = db.get_by_id("user_details", {"card_id": "%%s"}, [card_id])
+        result = db.get_by_id("user_details", ["card_id"], [card_id])
         if (result is None):
             ser.write(b"Invalid")
         else:
             print(result)
-            ser.write(b"Exists|%s|%s" %(result[0], result[1], result[6]))
+            temp = f"Exists|{result[0]}|{result[1]}|{result[6]}"
+            print(temp
+            ser.write(str.encode(temp))
 
 def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
