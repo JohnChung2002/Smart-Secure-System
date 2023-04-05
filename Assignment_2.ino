@@ -192,7 +192,7 @@ bool getID() {
   return true;
 }
 
-String[] splitStringByDelimiter(String input, String delimiter) {
+String* splitStringByDelimiter(String input, String delimiter) {
   String[] tokens = new String[2];
   while ((token = input.substring(0, input.indexOf(delimiter))) != "") {
     tokens[i] = token;
