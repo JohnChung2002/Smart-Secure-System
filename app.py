@@ -6,29 +6,50 @@ import serial
 latest_sensor_data = []
 
 app = Flask(__name__)
-# ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-# ser.reset_input_buffer()
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
 
 def read_serial_input():
     while True:
-        #read serial input from arduino if not null
         if (ser.in_waiting > 0):
             input = ser.readline().decode('utf-8').rstrip().split("|")
             if (input[0] == "Entry" or input[0] == "Exit"):
-                update_entry_exit(input)
+                insert_entry_exit(input)
             if (input[0] == "Alarm"):
                 update_alarm_status(input)
+            if (input[0] == "Unlock"):
+                insert_unlock_attempt(input)
+            if (input[0] == "Request"):
+                check_if_card_exists(input[1])
 
-def update_entry_exit(sensor_data):
-    #update entry exit in db
+
+def check_if_card_exists(card_id):
+    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    with db:
+        result = db.get_by_id("user_details", {"card_id": "%%s"}, [card_id])
+        if (result is None):
+            ser.write(b"Invalid")
+        else:
+            print(result)
+            ser.write(b"Exists|%s|%s" %(result[0], result[1], result[6]))
+
+def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
     with db:
         db.insert()
 
 def update_alarm_status(sensor_data):
-    #update alarm status in db
     db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    with db:
+        db.update("config", {"value": "%%s"}, {"config": "%%s"}, ["alarm_status", sensor_data[1]])
+
+def insert_unlock_attempt(sensor_data):
+    db = MySQLService('localhost', 'pi', 'pi', 'sensor_db')
+    if len(sensor_data) == 3:
+        sensor_data.append(None)
+    with db:
+        db.insert("unlock_logs", {"type": "%%s", "status": "%%s", "%%user_id": "%%s"}, [sensor_data[1], sensor_data[2], sensor_data[3]])
 
 #Dashboard
 @app.route('/')
@@ -43,12 +64,12 @@ def index():
 
 @app.route('/alarm-mode-on')
 def alarm_mode_on():
-    #ser.write(b"Alarm On")
+    ser.write(b"Alarm On")
     return "Alarm On", 200
 
 @app.route('/alarm-mode-off')
 def alarm_mode_off():
-    #ser.write(b"Alarm Off")
+    ser.write(b"Alarm Off")
     return "Alarm Off", 200
 
 def request_has_connection():

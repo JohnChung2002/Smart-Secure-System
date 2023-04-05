@@ -53,25 +53,28 @@ CREATE TABLE IF NOT EXISTS `user_accounts` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` ENUM("Admin", "User") NOT NULL DEFAULT "User",
-  `key_card` CHAR(8) NOT NULL,
   `account_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
 );
 CREATE TABLE IF NOT EXISTS `user_details` (
-  `user_id` INT(8) NOT NULL,
+  `user_id` INT(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `age` INT(3) NOT NULL,
   `weight` NUMERIC(5,2) NOT NULL,
   `height` NUMERIC(5,2) NOT NULL,
-  PRIMARY KEY (`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
+  `card_id` CHAR(8) NOT NULL,
+  `type` ENUM("Human", "Pet") NOT NULL DEFAULT "User",
+  PRIMARY KEY (`user_id`)
 );
 CREATE TABLE IF NOT EXISTS `unlock_logs` (
   `unlock_id` INT(8) NOT NULL AUTO_INCREMENT,
   `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` ENUM("Entry", "Exit") NOT NULL,
-  `status` ENUM("Success", "Failed") NOT NULL,
-  PRIMARY KEY (`unlock_id`)
+  `status` ENUM("Success", "Failed", "Pending") NOT NULL DEFAULT "Pending",
+  `user_id` INT(8) NOT NULL,
+  PRIMARY KEY (`unlock_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
 );
 CREATE TABLE IF NOT EXISTS `in_out_logs` (
   `unlock_id` INT(8) NOT NULL,
@@ -80,6 +83,14 @@ CREATE TABLE IF NOT EXISTS `in_out_logs` (
   `weight` NUMERIC(5,2) NOT NULL,
   `height` NUMERIC(5,2) NOT NULL,
   `bmi` NUMERIC(4,2) NOT NULL,
+  PRIMARY KEY (`unlock_id`, `timestamp`),
+  FOREIGN KEY (`unlock_id`) REFERENCES `unlock_logs`(`unlock_id`)
+);
+CREATE TABLE IF NOT EXISTS `remote_approval` (
+  `unlock_id` INT(8) NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` ENUM("Approved", "Denied") NOT NULL,
+  `user_id` INT(8) NOT NULL,
   PRIMARY KEY (`unlock_id`, `timestamp`),
   FOREIGN KEY (`unlock_id`) REFERENCES `unlock_logs`(`unlock_id`)
 );

@@ -42,6 +42,7 @@ bool waitingForCard = false;
 bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
+String currentUserInfo[4];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -191,6 +192,15 @@ bool getID() {
   return true;
 }
 
+String[] splitStringByDelimiter(String input, String delimiter) {
+  String[] tokens = new String[2];
+  while ((token = input.substring(0, input.indexOf(delimiter))) != "") {
+    tokens[i] = token;
+    input = input.substring(input.indexOf(delimiter) + 1);
+  }
+  return tokens
+}
+
 bool checkIDInDatabase() {
   Serial.println(tagID);
   long startTime = millis();
@@ -201,10 +211,14 @@ bool checkIDInDatabase() {
     }
     serialInput = Serial.readString();
     if (serialInput != "") {
-      Serial.print(serialInput);
-      bool status = (serialInput == "Exists");
-      waitingForInput = false;
-      return status; 
+      if (serialInput == "Invalid") {
+        waitingForInput = false;
+        return false;
+      } else {
+
+        waitingForInput = false;
+        return true;
+      }
     }
     if (millis() - startTime >= 5000) {
       waitingForInput = false;
@@ -219,12 +233,13 @@ void startInOutScan() {
   while (entryExitStatus != "") {
     entryExitStatus = checkInOut();
     if (entryExitStatus == "Entry" || entryExitStatus == "Exit") {
-      serialOutput = entryExitStatus + "|" + String(height) + "|" + String(weight) + "|" + String(bmi);
+      serialOutput = entryExitStatus + "|" + currentUserInfo[1] + "|" + String(height) + "|" + String(weight) + "|" + String(bmi);
       Serial.println(serialOutput);
     }
   }
   Serial.print("Number of persons in room: ");
   Serial.println(personCount);
+  memset(currentUserInfo, 0, sizeof(currentUserInfo));
 }
 
 String checkInOut() {
@@ -300,30 +315,8 @@ void setup() {
 }
 
 void loop() {
-  // noStopDelay(500);
-  // greenLight();
-  // noStopDelay(500);
-  // redLight();
-  // noStopDelay(500);
-  // offLight();
-  // noStopDelay(200);
-  // yellowLight();
-  // noStopDelay(500);
-  // blueLight();
-  // noStopDelay(500);
-  // noStopDelay(5000);
-  // Serial.print("Original Point 1: ");
-  // Serial.println(analogRead(A1));
-  // Serial.print("Original Point 2: ");
-  // Serial.println(analogRead(A2));
-  // setCurrentIRThreshold();
-  // noStopDelay(1000);
-  // checkInOut();
-  
   noStopDelay(1000);
   offLight();
-  Serial.println("Access Control ");
-  Serial.println("Scan Your Card>>");
   do {
     if (Serial.available() != 0) {
       String command = Serial.readString();
@@ -349,7 +342,8 @@ void loop() {
     }
     if (cardScanned) {
       waitingForCard = false;
-      if (tagID == ExitTag){ 
+      if (tagID == ExitTag){
+        Serial.println("Unlock|Exit|Success");
         startInOutScan();
       } else {
         if (checkIDInDatabase()) {
