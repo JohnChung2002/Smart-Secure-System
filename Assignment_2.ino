@@ -192,13 +192,16 @@ bool getID() {
   return true;
 }
 
-String* splitStringByDelimiter(String input, String delimiter) {
-  String[] tokens = new String[2];
+String* splitStringByDelimiter(String input, String delimiter, int size) {
+  String tokens[size];
+  String token;
+  int i = 0;
   while ((token = input.substring(0, input.indexOf(delimiter))) != "") {
     tokens[i] = token;
     input = input.substring(input.indexOf(delimiter) + 1);
+    i++;
   }
-  return tokens
+  return tokens;
 }
 
 bool checkIDInDatabase() {
