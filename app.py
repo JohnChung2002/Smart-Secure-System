@@ -35,7 +35,7 @@ def check_if_card_exists(card_id):
         else:
             print(result)
             temp = f"Exists|{result[0]}|{result[1]}|{result[6]}"
-            print(temp
+            print(temp)
             ser.write(str.encode(temp))
 
 def insert_entry_exit(sensor_data):
