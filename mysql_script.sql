@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `user_details` (
   `weight` NUMERIC(5,2) NOT NULL,
   `height` NUMERIC(5,2) NOT NULL,
   `card_id` CHAR(8) NOT NULL,
-  `type` ENUM("Human", "Pet") NOT NULL DEFAULT "User",
+  `type` ENUM("Human", "Pet") NOT NULL DEFAULT "Human",
   PRIMARY KEY (`user_id`)
 );
 CREATE TABLE IF NOT EXISTS `user_accounts` (
@@ -96,5 +96,5 @@ CREATE TABLE IF NOT EXISTS `remote_approval` (
 );
 CREATE TABLE IF NOT EXISTS `configs` (
   `config` VARCHAR(255) NOT NULL,
-  `value` VARCHAR(255) NOT NULL,
+  `value` VARCHAR(255) NOT NULL
 );
