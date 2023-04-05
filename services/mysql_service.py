@@ -46,7 +46,6 @@ class MySQLService:
 
     def insert(self, table_name: str, fields: dict, data: list):
         cursor = self.connection.cursor()
-        print(f"INSERT INTO {table_name} ({', '.join(list(fields.keys()))}) VALUES ({', '.join(list(fields.values()))})")
         cursor.execute(f"INSERT INTO {table_name} ({', '.join(list(fields.keys()))}) VALUES ({', '.join(list(fields.values()))})", data)
         self.connection.commit()
         cursor.close()
