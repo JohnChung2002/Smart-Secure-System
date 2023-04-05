@@ -3,7 +3,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
-#include <vector>
 
 #define BUTTON_PIN 1
 
@@ -43,7 +42,7 @@ bool waitingForCard = false;
 bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
-vector currentUserInfo[4];
+String currentUserInfo[4];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);

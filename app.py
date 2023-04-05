@@ -41,7 +41,7 @@ def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         last_unlock = db.get_last_entry("unlock_logs", "unlock_id")
-        db.insert("in_out_logs", ["unlock_id", "type", "weight", "height", "bmi"], [last_unlock[0]] | sensor_data)
+        db.insert("in_out_logs", ["unlock_id", "type", "weight", "height", "bmi"], [last_unlock[0]] + sensor_data)
 
 def update_alarm_status(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
