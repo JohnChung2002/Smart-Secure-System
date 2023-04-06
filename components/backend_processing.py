@@ -21,10 +21,11 @@ def update_alarm_status(sensor_data):
     with db:
         db.update("config", ["value", "config"], ["alarm_status"], [sensor_data[1]])
 
-def insert_unlock_attempt(sensor_data):
+def insert_unlock_attempt(sensor_data, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     if len(sensor_data) == 3:
         sensor_data.append(None)
     with db:
         db.insert("unlock_logs", ["type", "status", "user_id"], [sensor_data[1], sensor_data[2], sensor_data[3]])
-        return db.get_last_entry("unlock_logs", "unlock_id")[0]
+        unlock_id = db.get_last_entry("unlock_logs", "unlock_id")[0]
+        ser.write(str.encode(unlock_id))
