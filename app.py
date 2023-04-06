@@ -65,7 +65,6 @@ def index():
         {'username': 'Bob'},
         {'username': 'Charlie'},
     ]
-    print(len(latest_sensor_data))
     return render_template('dashboard.html', users=users)
 
 @app.route('/alarm-mode-on')
