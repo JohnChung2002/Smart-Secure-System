@@ -20,8 +20,8 @@ app.register_blueprint(alarm_bp)
 
 def read_serial_input():
     while True:
-        if (g.ser.in_waiting > 0):
-            temp = g.ser.readline()
+        if (ser.in_waiting > 0):
+            temp = ser.readline()
             print(temp)
             input = temp.decode('utf-8').rstrip().split("|")
             if (input[0] == "Entry" or input[0] == "Exit"):
@@ -40,10 +40,10 @@ def check_if_card_exists(card_id):
     with db:
         result = db.get_by_id("user_details", ["card_id"], [card_id])
         if (result is None):
-            g.ser.write(b"Invalid")
+            ser.write(b"Invalid")
         else:
             temp = f"Exists|{result[0]}|{result[1]}|{result[6]}"
-            g.ser.write(str.encode(temp))
+            ser.write(str.encode(temp))
 
 def insert_entry_exit(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
