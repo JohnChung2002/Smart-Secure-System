@@ -123,6 +123,7 @@ bool waitForRemoteApprove() {
     serialInput = Serial.readString();
     if (serialInput != "") {
       unlockID = serialInput.toInt();
+      break;
     }
   }
   while (Serial.available() == 0) {
@@ -392,7 +393,6 @@ void loop() {
         startInOutScan();
       } else {
         if (checkIDInDatabase()) {
-          Serial.println("Hello");
           yellowLight();
           if (waitForRemoteApprove()) {
             startInOutScan();

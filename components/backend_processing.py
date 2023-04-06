@@ -26,6 +26,8 @@ def insert_unlock_attempt(sensor_data, ser):
     if len(sensor_data) == 3:
         sensor_data.append(None)
     with db:
+        print("Yes")
         db.insert("unlock_logs", ["type", "status", "user_id"], [sensor_data[1], sensor_data[2], sensor_data[3]])
         unlock_id = db.get_last_entry("unlock_logs", "unlock_id")[0]
-        ser.write(str.encode(unlock_id))
+        print(unlock_id)
+        ser.write(str.encode(str(unlock_id)))
