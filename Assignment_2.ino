@@ -29,7 +29,6 @@
 #define DOOR_HEIGHT 185
 
 byte readCard[4];
-String MasterTag = "C3E86097";
 String ExitTag = "A6D715E";
 String tagID = "";
 bool personInside = false;
@@ -42,6 +41,7 @@ bool waitingForCard = false;
 bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
+int unlockID = NAN;
 String currentUserInfo[4];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
@@ -117,6 +117,14 @@ void noStopDelay(int interval) {
 
 bool waitForRemoteApprove() {
   long startTime = millis();
+  serialOutput = "Unlock|Entry|Pending|" + currentUserInfo[0];
+  Serial.println(serialOutput);
+  while (Serial.available() == 0) {
+    serialInput = Serial.readString();
+    if (serialInput != "") {
+      unlockID = toInt(serialInput);
+    }
+  }
   while (Serial.available() == 0) {
     if (!waitingForInput) {
       Serial.println("Approval");
@@ -126,7 +134,6 @@ bool waitForRemoteApprove() {
     }
     serialInput = Serial.readString();
     if (serialInput != "") {
-      Serial.print(serialInput);
       bool status = (serialInput == "Approved");
       if (!status) {
         denyAccess();
@@ -134,9 +141,11 @@ bool waitForRemoteApprove() {
       waitingForInput = false;
       return status; 
     }
-    if (millis() - startTime >= 5000) {
+    if (millis() - startTime >= 10000) {
       denyAccess();
       waitingForInput = false;
+      serialOutput = "Update|Failed|" + String(unlockID); 
+      Serial.println(serialOutput);
       return false;
     }
   }  
@@ -391,6 +400,7 @@ void loop() {
           denyAccess();
         }
       }
+      unlockID = NAN;
       Serial.println("--------------------------");
     }
   } while (!cardScanned);
