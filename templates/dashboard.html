@@ -47,7 +47,9 @@
     $(function () {
         $('#alarmButton').click(function () {
             // Send request to trigger alarm
-            $.get('/alarm');
+            $.get('/alarm', function (data) {
+                $('#alarm_status').text(data);
+            });
         });
     });
 </script>
