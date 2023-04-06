@@ -71,7 +71,7 @@ def index():
 def login():
     if "username" in session:
         redirect(url_for('/'))
-    return render_template('login.html')
+    return render_template('login.html', message="")
 
 @app.route('/login', methods=['POST'])
 def login_post():
