@@ -7,7 +7,7 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['GET'])
 def login():
     if "username" in session:
-        return redirect(url_for('index'))
+        return redirect("/")
     return render_template('login.html', message="")
 
 @auth_bp.route('/login', methods=['POST'])
@@ -23,7 +23,7 @@ def login_post():
             try:
                 if ph.verify(result[2], password):
                     session["username"] = username
-                return redirect(url_for('index'))
+                return redirect("/")
             except:
                 pass
     return render_template('login.html', message="Invalid username or password")
