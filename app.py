@@ -65,9 +65,8 @@ def insert_unlock_attempt(sensor_data):
 
 #Dashboard
 @app.route('/')
+@auth_middleware
 def index():
-    if "username" not in session:
-        return redirect(url_for('login'))
     users = [
         {'username': 'Alice'},
         {'username': 'Bob'},
