@@ -44,7 +44,8 @@ sensor_thread.start()
 def index():
     with g.dbconn:
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
-    return render_template('dashboard.html', name=user[1], role=session["user_role"])
+        alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
+    return render_template('dashboard.html', name=user[1], role=session["user_role"], alarm_status=alarm_status[1])
 
 def request_has_connection():
     return (
