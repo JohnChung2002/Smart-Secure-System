@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, g
+from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import g
 from argon2 import PasswordHasher
 from services.auth_middleware import auth_middleware
 
@@ -15,16 +16,17 @@ def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    ph = PasswordHasher()
-    result = g.dbconn.get_by_id("user_accounts", ["username"], [username])
-    if result is not None:
-        try:
-            if ph.verify(result[2], password):
-                session["user_id"] = result[0]
-                session["user_role"] = result[3]
-            return redirect("/"), 200
-        except:
-            pass
+    with g.dbconn as db:
+        ph = PasswordHasher()
+        result = db.get_by_id("user_accounts", ["username"], [username])
+        if result is not None:
+            try:
+                if ph.verify(result[2], password):
+                    session["user_id"] = result[0]
+                    session["user_role"] = result[3]
+                return redirect("/"), 200
+            except:
+                pass
     return render_template('login.html', message="Invalid username or password"), 401
 
 @auth_bp.route('/logout')
