@@ -15,10 +15,11 @@ def login():
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
-
-    with g.dbconn as db:
+    
+    print(g.dbconn)
+    with g.dbconn:
         ph = PasswordHasher()
-        result = db.get_by_id("user_accounts", ["username"], [username])
+        result = g.dbconn.get_by_id("user_accounts", ["username"], [username])
         if result is not None:
             try:
                 if ph.verify(result[2], password):
