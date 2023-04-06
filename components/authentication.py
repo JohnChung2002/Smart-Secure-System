@@ -7,7 +7,7 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET'])
 def login():
-    if "username" in session:
+    if "user_id" in session and "user_role" in session:
         return redirect("/")
     return render_template('login.html', message="")
 
@@ -23,7 +23,8 @@ def login_post():
         if result is not None:
             try:
                 if ph.verify(result[2], password):
-                    session["username"] = username
+                    session["user_id"] = result[0]
+                    session["user_role"] = result[3]
                 return redirect("/")
             except:
                 pass
@@ -32,5 +33,6 @@ def login_post():
 @auth_bp.route('/logout')
 @auth_middleware
 def logout():
-    session.pop('username', None)
+    session.pop('user_id', None)
+    session.pop('user_role', None)
     return redirect(url_for('auth.login'))

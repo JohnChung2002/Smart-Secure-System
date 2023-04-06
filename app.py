@@ -42,12 +42,9 @@ sensor_thread.start()
 @app.route('/')
 @auth_middleware
 def index():
-    users = [
-        {'username': 'Alice'},
-        {'username': 'Bob'},
-        {'username': 'Charlie'},
-    ]
-    return render_template('dashboard.html', users=users)
+    with g.dbconn:
+        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+    return render_template('dashboard.html', name=user[1], role=session["user_role"])
 
 def request_has_connection():
     return (
