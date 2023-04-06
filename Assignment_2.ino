@@ -95,12 +95,35 @@ void alarm() {
   // noTone(BUZER_PIN);
 
   
-  tone(BUZER_PIN,494,500); 
-  noStopDelay(300); 
-  noTone(BUZER_PIN); 
-  tone(BUZER_PIN,523,300); 
-  noStopDelay(100);  
-  noTone(BUZER_PIN); 
+  // tone(BUZER_PIN,494,500); 
+  // noStopDelay(300); 
+  // noTone(BUZER_PIN); 
+  // tone(BUZER_PIN,523,300); 
+  // noStopDelay(100);  
+  // noTone(BUZER_PIN); 
+  int frequency = 1000;  // Set the starting frequency
+  int delta = 10;  // Set the frequency step size
+  int volume = 128;  // Set the initial volume
+  
+  for (int i = 0; i < 1000; i++) {  // Loop for the specified duration
+    float t = i / 1000.0;  // Calculate the time in seconds
+    
+    if (t < 5) {  // If the time is less than 5 seconds, increase the frequency
+      frequency += delta;
+    } else if (t < 10) {  // If the time is between 5 and 10 seconds, decrease the frequency
+      frequency -= delta;
+    } else {  // If the time is greater than 10 seconds, start over at the starting frequency
+      frequency = 1000;
+    }
+    
+    float dutyCycle = 0.5 * (1.0 + sin(2 * PI * frequency * t));  // Calculate the duty cycle of the PWM signal
+    
+    int duty = int(dutyCycle * 255 * volume / 100);  // Calculate the duty cycle value between 0 and 255
+    analogWrite(BUZER_PIN, duty);  // Output the PWM signal to the speaker
+    delay(1);  // Wait for 1 millisecond before changing the duty cycle
+  }
+  
+  analogWrite(BUZER_PIN, 0);  // Turn off the siren tone after the duration is over
 } 
 
 void noStopDelay(int interval) {
