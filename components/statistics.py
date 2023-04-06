@@ -1,9 +1,9 @@
 from flask import Blueprint, g, session
 from services.auth_middleware import auth_middleware, admin_auth_middleware
 
-statistics_bp = Blueprint('statistics', __name__)
+stats_bp = Blueprint('statistics', __name__)
 
-@statistics_bp.route('/health_statistics')
+@stats_bp.route('/health_statistics')
 @auth_middleware
 def health_statistics():
     with g.dbconn as db:
@@ -14,7 +14,7 @@ def health_statistics():
         bmi_value = list(map(lambda x: x[4], results))
         return {"index": index, "weight_value": weight_value, "height_value": height_value, "bmi_value": bmi_value}, 200
     
-@statistics_bp.route('/health_statistics/<id>')
+@stats_bp.route('/health_statistics/<id>')
 @admin_auth_middleware
 def health_statistics_by_id(id):
     with g.dbconn as db:

@@ -6,6 +6,7 @@ import serial
 from components.authentication import auth_bp
 from components.alarm import alarm_bp
 from components.unlocking import unlock_bp
+from components.statistics import stats_bp
 from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, check_if_card_exists
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ app.secret_key = "E2DAD46AF8783EB848129379F1328"
 app.register_blueprint(auth_bp)
 app.register_blueprint(alarm_bp)
 app.register_blueprint(unlock_bp)
+app.register_blueprint(stats_bp)
 
 def read_serial_input():
     while True:
