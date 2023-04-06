@@ -24,7 +24,7 @@ class MySQLService:
         self.connect()
     
     def __exit__(self, type, value, traceback):
-        self.close()
+        self.connection.close()
 
     def join_param_string(self, param_list:list):
         return ', '.join([('%s = %%s' %(key)) for key in param_list])
