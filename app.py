@@ -59,9 +59,9 @@ def page_not_found(e):
 
 def request_has_connection():
     return (
-        hasattr(g, 'dbconn') and g.dbconn is not None
+        ("dbconn" in g) and (g.dbconn is not None)
     ) and (
-        hasattr(g, 'ser') and g.ser is not None
+        ("ser" in g) and (g.ser is not None)
     )
 
 @app.before_request
@@ -74,7 +74,8 @@ def get_request_connection():
 def close_db_connection(ex):
     if request_has_connection():
         dbconn = g.pop('dbconn', None)
-        dbconn.close()
+        if (dbconn is not None):
+            dbconn.close()
         g.pop("ser", None)
 
 if __name__ == "__main__":
