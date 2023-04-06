@@ -1,4 +1,5 @@
 from flask import session, redirect, url_for
+from components.authentication import login
 
 def auth_middleware(func):
     def wrapper(*args, **kwargs):
