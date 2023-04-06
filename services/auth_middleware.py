@@ -4,7 +4,7 @@ from functools import wraps
 def auth_middleware(func):
     @wraps(func)
     def wrapper_func(*args, **kwargs):
-        if 'username' not in session:
+        if 'user_id' not in session and 'user_role' not in session:
             # user is not authenticated, redirect to login page
             return redirect(url_for('auth.login'))
         # user is authenticated, proceed to request handling
