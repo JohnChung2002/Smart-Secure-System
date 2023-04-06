@@ -122,7 +122,7 @@ bool waitForRemoteApprove() {
   while (Serial.available() == 0) {
     serialInput = Serial.readString();
     if (serialInput != "") {
-      unlockID = toInt(serialInput);
+      unlockID = serialInput.toInt();
     }
   }
   while (Serial.available() == 0) {
