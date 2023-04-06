@@ -45,7 +45,15 @@ def index():
     with g.dbconn:
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-    return render_template('dashboard.html', name=user[1], role=session["user_role"], alarm_status=alarm_status[1])
+    return render_template('dashboard.html', name=user[1], role=session["user_role"], alarm_status=alarm_status[1]), 200
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return ('''
+    <body><h1>Not Found</h1>
+    <p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+    </body>
+    '''), 404
 
 def request_has_connection():
     return (
