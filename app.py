@@ -3,7 +3,9 @@ from services.mysql_service import MySQLService
 from threading import Thread
 import serial
 
-latest_sensor_data = []
+sensor_config = {
+    "alarm": ""
+}
 
 app = Flask(__name__)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -26,7 +28,6 @@ def read_serial_input():
                 check_if_card_exists(input[1])
             if (input[0] == "Approval"):
                 print("Yes")
-
 
 def check_if_card_exists(card_id):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
