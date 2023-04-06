@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, g
+from flask import Flask, render_template, redirect, url_for, session, g
 from services.mysql_service import MySQLService
 from threading import Thread
 import serial
@@ -66,6 +66,12 @@ def index():
         {'username': 'Charlie'},
     ]
     return render_template('dashboard.html', users=users)
+
+@app.route('/login', methods=['GET'])
+def login():
+    if "username" in session:
+        redirect(url_for('/'))
+    return render_template('login.html')
 
 @app.route('/alarm-mode-on')
 def alarm_mode_on():
