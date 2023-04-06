@@ -3,7 +3,8 @@ from services.mysql_service import MySQLService
 from services.auth_middleware import auth_middleware
 from threading import Thread
 import serial
-from components.authentication import auth
+from components.authentication import auth_bp
+from components.alarm import alarm_bp
 
 sensor_config = {
     "alarm": ""
@@ -14,7 +15,8 @@ g.ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 g.ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
 
-app.register_blueprint(auth)
+app.register_blueprint(auth_bp)
+app.register_blueprint(alarm_bp)
 
 def read_serial_input():
     while True:

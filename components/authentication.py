@@ -2,15 +2,15 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from services.mysql_service import MySQLService
 from argon2 import PasswordHasher
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET'])
+@auth_bp.route('/login', methods=['GET'])
 def login():
     if "username" in session:
         return redirect(url_for('index'))
     return render_template('login.html', message="")
 
-@auth.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')

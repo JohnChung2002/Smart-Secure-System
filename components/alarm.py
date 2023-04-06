@@ -2,9 +2,9 @@ from flask import Blueprint, g
 from services.auth_middleware import auth_middleware
 from services.mysql_service import MySQLService
 
-alarm = Blueprint('alarm', __name__)
+alarm_bp = Blueprint('alarm', __name__)
 
-@alarm.route('/alarm')
+@alarm_bp.route('/alarm')
 @auth_middleware
 def alarm():
     with g.dbconn:
