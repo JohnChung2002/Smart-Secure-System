@@ -120,9 +120,12 @@ bool waitForRemoteApprove() {
   serialOutput = "Unlock|Entry|Pending|" + currentUserInfo[1];
   Serial.println(serialOutput);
   while (Serial.available() == 0) {
-    unlockID = Serial.parseInt();
+    serialInput = Serial.readString();
+    if (serialInput != "") {
+      unlockID = serialInput.toInt();
+      break;
+    }
   }
-  Serial.println("Yeet");
   while (Serial.available() == 0) {
     if (!waitingForInput) {
       Serial.println("Approval");
