@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, session, g
+from flask import Flask, render_template, redirect, url_for, request, session, g
 from services.mysql_service import MySQLService
 from threading import Thread
 import serial
@@ -72,6 +72,20 @@ def login():
     if "username" in session:
         redirect(url_for('/'))
     return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
+    with db:
+        result = db.get_by_id("user_details", ["username", "password"], [username, password])
+        if result is None:
+            return render_template('login.html', message="Invalid username or password")
+        else:
+            session["username"] = username
+            return redirect(url_for('/'))
 
 @app.route('/alarm-mode-on')
 def alarm_mode_on():
