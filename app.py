@@ -28,7 +28,7 @@ def read_serial_input():
             if (input[0] == "Alarm"):
                 update_alarm_status(input)
             if (input[0] == "Unlock"):
-                insert_unlock_attempt(input)
+                insert_unlock_attempt(input, ser)
             if (input[0] == "Request"):
                 check_if_card_exists(input[1], ser)
             if (input[0] == "Approval"):
