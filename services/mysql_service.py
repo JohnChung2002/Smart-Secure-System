@@ -80,7 +80,7 @@ class MySQLService:
         ) t2 ON t1.unlock_id = t2.unlock_id AND t1.timestamp = t2.min_timestamp
         INNER JOIN unlock_logs t3 ON t1.unlock_id = t3.unlock_id
         WHERE t3.user_id = %s
-        GROUP BY DATE(t1.timestamp);''', user_id)
+        GROUP BY DATE(t1.timestamp)''', [user_id])
         result = cursor.fetchall()
         cursor.close()
         return result
