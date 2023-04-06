@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, request, session, g
 from services.mysql_service import MySQLService
+from services.auth_middleware import auth_middleware
 from threading import Thread
 import serial
-from argon2 import PasswordHasher
+from components.authentication import auth
 
 sensor_config = {
     "alarm": ""
@@ -12,6 +13,8 @@ app = Flask(__name__)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
+
+app.register_blueprint(auth)
 
 def read_serial_input():
     while True:
@@ -69,30 +72,6 @@ def index():
         {'username': 'Charlie'},
     ]
     return render_template('dashboard.html', users=users)
-
-@app.route('/login', methods=['GET'])
-def login():
-    if "username" in session:
-        return redirect(url_for('index'))
-    return render_template('login.html', message="")
-
-@app.route('/login', methods=['POST'])
-def login_post():
-    username = request.form.get('username')
-    password = request.form.get('password')
-
-    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
-    with db:
-        ph = PasswordHasher()
-        result = db.get_by_id("user_accounts", ["username"], [username])
-        if result is not None:
-            try:
-                if ph.verify(result[2], password):
-                    session["username"] = username
-                return redirect(url_for('index'))
-            except:
-                pass
-    return render_template('login.html', message="Invalid username or password")
 
 @app.route('/alarm-mode-on')
 def alarm_mode_on():
