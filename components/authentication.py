@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from services.mysql_service import MySQLService
 from argon2 import PasswordHasher
+from services.auth_middleware import auth_middleware
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -27,3 +28,9 @@ def login_post():
             except:
                 pass
     return render_template('login.html', message="Invalid username or password")
+
+@auth_bp.route('/logout')
+@auth_middleware
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('auth.login'))

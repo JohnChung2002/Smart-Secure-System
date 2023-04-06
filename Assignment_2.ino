@@ -270,6 +270,7 @@ void startInOutScan() {
   Serial.print("Number of persons in room: ");
   Serial.println(personCount);
   memset(currentUserInfo, 0, sizeof(currentUserInfo));
+  alarmMode = false;
 }
 
 String checkInOut() {
