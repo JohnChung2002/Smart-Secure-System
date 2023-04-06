@@ -117,7 +117,7 @@ void noStopDelay(int interval) {
 
 bool waitForRemoteApprove() {
   long startTime = millis();
-  serialOutput = "Unlock|Entry|Pending|" + currentUserInfo[0];
+  serialOutput = "Unlock|Entry|Pending|" + currentUserInfo[1];
   Serial.println(serialOutput);
   while (Serial.available() == 0) {
     serialInput = Serial.readString();
