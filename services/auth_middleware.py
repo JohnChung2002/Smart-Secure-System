@@ -1,6 +1,8 @@
 from flask import session, redirect, url_for
+from functools import wraps
 
 def auth_middleware(func):
+    @wraps(func)
     def wrapper_func(*args, **kwargs):
         if 'username' not in session:
             # user is not authenticated, redirect to login page
