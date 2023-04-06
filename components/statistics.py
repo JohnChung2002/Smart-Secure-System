@@ -6,8 +6,8 @@ stats_bp = Blueprint('statistics', __name__)
 @stats_bp.route('/health_statistics')
 @auth_middleware
 def health_statistics():
-    with g.dbconn as db:
-        results = db.get_user_health_statistics(session["user_id"])
+    with g.dbconn:
+        results = g.dbconn.get_user_health_statistics(session["user_id"])
         index = list(map(lambda x: x[1], results))
         weight_value = list(map(lambda x: x[2], results))
         height_value = list(map(lambda x: x[3], results))
@@ -17,8 +17,8 @@ def health_statistics():
 @stats_bp.route('/health_statistics/<id>')
 @admin_auth_middleware
 def health_statistics_by_id(id):
-    with g.dbconn as db:
-        results = db.get_user_health_statistics(id)
+    with g.dbconn:
+        results = g.dbconn.get_user_health_statistics(id)
         index = list(map(lambda x: x[1], results))
         weight_value = list(map(lambda x: x[2], results))
         height_value = list(map(lambda x: x[3], results))
