@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, session, g
 from services.mysql_service import MySQLService
 from threading import Thread
 import serial
+from argon2 import PasswordHasher
 
 sensor_config = {
     "alarm": ""
@@ -80,12 +81,16 @@ def login_post():
 
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        result = db.get_by_id("user_details", ["username", "password"], [username, password])
-        if result is None:
-            return render_template('login.html', message="Invalid username or password")
-        else:
-            session["username"] = username
-            return redirect(url_for('/'))
+        ph = PasswordHasher()
+        result = db.get_by_id("user_accounts", ["username"], [username])
+        if result is not None:
+            try:
+                if ph.verify(result[2], password):
+                    session["username"] = username
+                return redirect(url_for('/'))
+            except:
+                pass
+    return render_template('login.html', message="Invalid username or password")
 
 @app.route('/alarm-mode-on')
 def alarm_mode_on():
