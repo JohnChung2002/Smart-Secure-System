@@ -391,7 +391,6 @@ void loop() {
         startInOutScan();
       } else {
         if (checkIDInDatabase()) {
-          Serial.println("Hello");
           yellowLight();
           if (waitForRemoteApprove()) {
             startInOutScan();
