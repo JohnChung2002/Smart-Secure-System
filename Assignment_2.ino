@@ -332,6 +332,7 @@ void loop() {
         alarmMode = false;
       } else if (command == "Remote Unlock") {
         startInOutScan();
+        waitingForCard = false;
       }
     }
     if (alarmMode) {
