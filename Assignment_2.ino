@@ -379,6 +379,7 @@ void loop() {
     }
     cardScanned = getID();
     if (!waitingForCard) {
+      offLight();
       lcd.clear();
       lcd.print("Waiting for scan");
       doorServo.write(90);
