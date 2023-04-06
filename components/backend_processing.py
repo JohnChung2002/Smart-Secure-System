@@ -27,3 +27,4 @@ def insert_unlock_attempt(sensor_data):
         sensor_data.append(None)
     with db:
         db.insert("unlock_logs", ["type", "status", "user_id"], [sensor_data[1], sensor_data[2], sensor_data[3]])
+        return db.get_last_entry("unlock_logs", "unlock_id")[0]
