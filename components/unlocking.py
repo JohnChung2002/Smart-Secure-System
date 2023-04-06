@@ -12,7 +12,6 @@ def unlock():
 @unlock_bp.route('/approve/<id>')
 @auth_middleware
 def approve(id):
-    with g.dbconn as db:
-        db.update("unlock_logs", ["status"], ["unlock_id"], ["Success", id])
+    g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Success", id])
     g.ser.write(b"Approved")
     return "Approved", 200
