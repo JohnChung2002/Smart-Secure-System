@@ -69,7 +69,7 @@ class MySQLService:
         cursor.close()
         return result
     
-    def get_user_bmi_statistics(self, user_id: int):
+    def get_user_health_statistics(self, user_id: int):
         cursor = self.connection.cursor()
         cursor.execute(f'''SELECT t3.user_id, DATE(t1.timestamp) as date, AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
         FROM in_out_logs t1
