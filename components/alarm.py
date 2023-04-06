@@ -13,4 +13,4 @@ def alarm():
         status_message = f"Alarm {status}"
         g.ser.write(str.encode(status_message))
         g.dbconn.update("configs", ["value"], ["config"], [status, "Alarm Status"])
-    return status_message, 200
+    return status, 200
