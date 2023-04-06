@@ -80,20 +80,28 @@ void blueLight() {
 
 void alarm() {
   //tone(BUZER_PIN, 262, 500);
-  int frequency = 2000;  // Start with a low frequency
-  int stepSize = 100;  // Increase frequency by this amount each cycle
+  // int frequency = 2000;  // Start with a low frequency
+  // int stepSize = 100;  // Increase frequency by this amount each cycle
   
-  for (int i = 0; i < 500; i += 100) {  // Loop for the specified duration
-    tone(BUZER_PIN, frequency);  // Generate the square wave tone
-    noStopDelay(50);  // Wait 50 milliseconds before changing the frequency
-    noTone(BUZER_PIN);  // Stop the tone before changing frequency
-    frequency -= stepSize;  // Increase the frequency
-    if (frequency > 2000) {  // If we have reached the maximum frequency, start over at the low frequency
-      frequency = 500;
-    }
-  }
-  noTone(BUZER_PIN);
-}
+  // for (int i = 0; i < 500; i += 100) {  // Loop for the specified duration
+  //   tone(BUZER_PIN, frequency);  // Generate the square wave tone
+  //   noStopDelay(50);  // Wait 50 milliseconds before changing the frequency
+  //   noTone(BUZER_PIN);  // Stop the tone before changing frequency
+  //   frequency -= stepSize;  // Increase the frequency
+  //   if (frequency > 2000) {  // If we have reached the maximum frequency, start over at the low frequency
+  //     frequency = 500;
+  //   }
+  // }
+  // noTone(BUZER_PIN);
+
+  
+  tone(BUZER_PIN,494,500); 
+  noStopDelay(300); 
+  noTone(BUZER_PIN); 
+  tone(BUZER_PIN,523,300); 
+  noStopDelay(100);  
+  noTone(BUZER_PIN); 
+} 
 
 void noStopDelay(int interval) {
   long startDelayTime = millis();
