@@ -61,6 +61,8 @@ def insert_unlock_attempt(sensor_data):
 #Dashboard
 @app.route('/')
 def index():
+    if "username" not in session:
+        return redirect(url_for('login'))
     users = [
         {'username': 'Alice'},
         {'username': 'Bob'},
@@ -71,7 +73,7 @@ def index():
 @app.route('/login', methods=['GET'])
 def login():
     if "username" in session:
-        redirect(url_for('/'))
+        return redirect(url_for('index'))
     return render_template('login.html', message="")
 
 @app.route('/login', methods=['POST'])
@@ -87,7 +89,7 @@ def login_post():
             try:
                 if ph.verify(result[2], password):
                     session["username"] = username
-                return redirect(url_for('/'))
+                return redirect(url_for('index'))
             except:
                 pass
     return render_template('login.html', message="Invalid username or password")
