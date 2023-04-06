@@ -330,6 +330,8 @@ void loop() {
         alarmMode = true;
       } else if (command == "Alarm Off") {
         alarmMode = false;
+      } else if (command == "Remote Unlock") {
+        startInOutScan();
       }
     }
     if (alarmMode) {

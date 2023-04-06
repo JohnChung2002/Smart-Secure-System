@@ -35,9 +35,7 @@ def check_if_card_exists(card_id):
         if (result is None):
             ser.write(b"Invalid")
         else:
-            print(result)
             temp = f"Exists|{result[0]}|{result[1]}|{result[6]}"
-            print(temp)
             ser.write(str.encode(temp))
 
 def insert_entry_exit(sensor_data):
@@ -78,6 +76,11 @@ def alarm_mode_on():
 def alarm_mode_off():
     ser.write(b"Alarm Off")
     return "Alarm Off", 200
+
+@app.route('/unlock')
+def unlock():
+    ser.write(b"Remote Unlock")
+    return "Unlock", 200
 
 def request_has_connection():
     return hasattr(g, 'dbconn')
