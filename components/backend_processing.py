@@ -19,7 +19,7 @@ def insert_entry_exit(sensor_data):
 def update_alarm_status(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.update("config", ["value", "config"], ["alarm_status"], [sensor_data[1]])
+        db.update("configs", ["value", "config"], ["alarm_status"], [sensor_data[1]])
 
 def insert_unlock_attempt(sensor_data, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
@@ -35,3 +35,12 @@ def update_unlock_attempt(sensor_data, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         db.update("unlock_logs", ["status"], ["unlock_id"], [sensor_data[1], sensor_data[2]])
+
+def update_person_in_room(sensor_data):
+    db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
+    with db:
+        result = db.get_by_id("configs", ["config"], ["People in Room"])
+        count = int(sensor_data) + int(result[0])
+        if count < 0:
+            count = 0
+        db.update("configs", ["value"], ["config"], [count, "People in Room"])

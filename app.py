@@ -8,7 +8,7 @@ from components.unlocking import unlock_bp
 from components.statistics import stats_bp
 from components.configs import configs_bp
 from components.dashboard import dashboard_bp
-from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, check_if_card_exists
+from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, update_person_in_room, check_if_card_exists
 
 app = Flask(__name__)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -38,6 +38,8 @@ def read_serial_input():
                 check_if_card_exists(input[1], ser)
             if (input[0] == "Update"):
                 update_unlock_attempt(input, ser)
+            if (input[0] == "People"):
+                update_person_in_room(input[1])
 
 sensor_thread = Thread(target=read_serial_input)
 sensor_thread.daemon = True

@@ -284,9 +284,10 @@ void startInOutScan() {
       Serial.println(serialOutput);
     }
   }
-  Serial.print("Number of persons in room: ");
-  Serial.println(personCount);
+  serialOutput = "People|" + String(personCount);
+  Serial.println(serialOutput);
   memset(currentUserInfo, 0, sizeof(currentUserInfo));
+  personCount = 0;
   alarmMode = false;
 }
 
@@ -331,9 +332,6 @@ String checkInOut() {
       } while (analogRead(ENTRY_SENSOR) > ENTRY_THRESHOLD);
       Serial.println("Triggered Exit Point 2");
       personCount -= 1;
-      if (personCount == 0) {
-        personInside = false;
-      }
       height = getHeight();
       bmi = calcBMI();
       return "Exit";
