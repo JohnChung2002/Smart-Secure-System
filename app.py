@@ -1,6 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request, session, g
+from flask import Flask, g
 from services.mysql_service import MySQLService
-from services.auth_middleware import auth_middleware
 from threading import Thread
 import serial
 from components.authentication import auth_bp
