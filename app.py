@@ -47,7 +47,16 @@ def index():
     with g.dbconn:
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-    return render_template('dashboard.html', name=user[1], role=session["user_role"], alarm_status=alarm_status[1]), 200
+        weight, height, bmi = g.dbconn.get_user_average(session["user_id"])
+    return render_template(
+        'dashboard.html', 
+        name=user[1], 
+        role=session["user_role"], 
+        alarm_status=alarm_status[1]
+        weight=weight,
+        height=height,
+        bmi=bmi
+    ), 200
 
 @app.errorhandler(404)
 def page_not_found(e):

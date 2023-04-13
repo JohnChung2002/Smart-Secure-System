@@ -14,9 +14,6 @@ function getHealthStatistics() {
 }
 
 function initialiseHealthCharts() {
-    const weightChart = document.getElementById('weightChart');
-    const heightChart = document.getElementById('heightChart');
-    const bmiChart = document.getElementById('bmiChart');
     getHealthStatistics().then(function (data) {
         // Create a chart
         var ctx = document.getElementById('healthChart').getContext('2d');

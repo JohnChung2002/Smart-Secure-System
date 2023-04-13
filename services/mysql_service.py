@@ -69,6 +69,21 @@ class MySQLService:
         cursor.close()
         return result
     
+    def get_user_average(self, user_id: int):
+        cursor = self.connection.cursor()
+        cursor.execute(f'''SELECT AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
+        FROM in_out_logs t1
+        INNER JOIN (
+        SELECT unlock_id, MIN(timestamp) AS min_timestamp
+        FROM in_out_logs
+        GROUP BY unlock_id
+        ) t2 ON t1.unlock_id = t2.unlock_id AND t1.timestamp = t2.min_timestamp
+        INNER JOIN unlock_logs t3 ON t1.unlock_id = t3.unlock_id
+        WHERE t3.user_id = %s''', [user_id])
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+    
     def get_user_health_statistics(self, user_id: int):
         cursor = self.connection.cursor()
         cursor.execute(f'''SELECT t3.user_id, DATE(t1.timestamp) as date, AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
