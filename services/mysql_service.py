@@ -108,7 +108,7 @@ class MySQLService:
 
     def update_config(self, config: str, value: str):
         cursor = self.connection.cursor()
-        cursor.execute(f"UPDATE config SET value = %s WHERE config = %s AND editable = 1", [value, config])
+        cursor.execute(f"UPDATE configs SET value = %s WHERE config = %s AND editable = 1", [value, config])
         self.connection.commit()
         count = cursor.rowcount
         cursor.close()
