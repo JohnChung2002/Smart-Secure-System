@@ -29,6 +29,7 @@
                 $.ajax({
                     type: "POST",
                     url: "/configs",
+                    contentType: 'application/json',
                     data: {
                         config: config,
                         value: value
