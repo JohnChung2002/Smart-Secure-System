@@ -25,8 +25,9 @@ def insert_unlock_attempt(sensor_data, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     if len(sensor_data) == 3:
         sensor_data.append(None)
+        sensor_data.append(None)
     with db:
-        db.insert("unlock_logs", ["type", "status", "user_id"], [sensor_data[1], sensor_data[2], sensor_data[3]])
+        db.insert("unlock_logs", ["type", "status", "user_id", "key_type"], [sensor_data[1], sensor_data[2], sensor_data[3], sensor_data[4]])
         unlock_id = db.get_last_entry("unlock_logs", "unlock_id")[0]
         print(unlock_id)
         ser.write(str.encode(str(unlock_id)))
