@@ -41,6 +41,7 @@ bool waitingForCard = false;
 bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
+bool approved = false;
 int unlockID = NAN;
 int weightThreshold = 2;
 String currentUserInfo[5];
@@ -396,6 +397,7 @@ void loop() {
       waitingForCard = true;
     }
     if (cardScanned) {
+      approved = false;
       waitingForCard = false;
       if (tagID == ExitTag){
         Serial.println("Unlock|Exit|Success");
@@ -403,10 +405,14 @@ void loop() {
       } else {
         if (checkIDInDatabase()) {
           yellowLight();
+          approved = false;
           if (weightCheck()) {
+            approved = true;
             startInOutScan();
-          } else {
+          }
+          if (!approved) {
             if (waitForRemoteApprove()) {
+              approved = true;
               startInOutScan();
             }
           }
