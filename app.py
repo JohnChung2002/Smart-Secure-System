@@ -73,5 +73,9 @@ def close_db_connection(ex):
             dbconn.close()
         g.pop("ser", None)
 
+@app.template_filter('config_name_to_id')
+def config_name_to_id(config_name):
+    return config_name.lower().replace(" ", "-").replace("(", "9").replace(")", "0")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
