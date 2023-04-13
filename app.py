@@ -49,6 +49,8 @@ def index():
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
         weight, height, bmi = list(map(lambda x: round(x, 2), g.dbconn.get_user_average(session["user_id"])))
         approval = g.dbconn.get_last_entry("unlock_logs", "timestamp")
+        if approval[3] != "Pending": 
+            approval = None
     return render_template(
         'dashboard.html', 
         name=user[1], 
