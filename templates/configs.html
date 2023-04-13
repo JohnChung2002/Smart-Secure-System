@@ -1,0 +1,12 @@
+{% extend 'layout.html' %}
+
+{% block title %}Configurations{% endblock %}
+
+{% block content %}
+    <h1>Configurations</h1>
+    <ul>
+        {% for config in configs %}
+            <li>{{ config.name }}: {{ config.value }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
