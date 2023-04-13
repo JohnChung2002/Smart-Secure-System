@@ -6,10 +6,10 @@
     <div class="container">
         <h1>Configurations</h1>
         {% for config in configs %}
-        <label for="{{ config[0]|lower|replace(" ", "-") }}" class="form-label">{{ config[0] }}</label>
+        <label for="{{ config[0]|lower|replace(' ', '-') }}" class="form-label">{{ config[0] }}</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="{{ config[0]|lower|replace(" ", "-") }}" name="{{ config[0]|lower|replace(" ", "-") }}">
-          <button class="input-group-text">.00</button>
+          <input type="text" class="form-control" id="{{ config[0]|lower|replace(' ', '-') }}" name="{{ config[0]|lower|replace(' ', '-') }}">
+          <button class="input-group-text bg-primary">Update</button>
         </div>
         {% endfor %}
     </div>
