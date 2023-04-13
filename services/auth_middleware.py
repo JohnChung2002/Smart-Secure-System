@@ -17,7 +17,7 @@ def admin_auth_middleware(func):
         if 'user_id' not in session and 'user_role' not in session:
             # user is not authenticated, redirect to login page
             return redirect(url_for('auth.login')), 401
-        if session['user_role'] != 'admin':
+        if session['user_role'] != 'Admin':
             # user is not admin, redirect to home page
             return redirect("/"), 403
         # user is authenticated, proceed to request handling
