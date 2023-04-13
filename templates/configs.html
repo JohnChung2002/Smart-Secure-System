@@ -49,24 +49,22 @@
             <script>
                 $("#{{ config[0]|config_name_to_id }}-btn").click(function() {
                     updateConfig("{{ config[0]|config_name_to_id }}", $("#{{ config[0]|config_name_to_id }}").val()).then(function(result) {
-                        $("#{{ config[0]|config_name_to_id }}-alert").text(result);
                         $("#{{ config[0]|config_name_to_id }}-alert").removeClass("d-none");
                         $("#{{ config[0]|config_name_to_id }}-alert").addClass("text-success");
-                        $("#{{ config[0]|config_name_to_id }}-alert").val("Update Successful!");
+                        $("#{{ config[0]|config_name_to_id }}-alert").text("Update Successful!");
                         setTimeout(function() {
                             $("#{{ config[0]|config_name_to_id }}-alert").addClass("d-none");
                             $("#{{ config[0]|config_name_to_id }}-alert").removeClass("text-success");
-                            $("#{{ config[0]|config_name_to_id }}-alert").val("");
+                            $("#{{ config[0]|config_name_to_id }}-alert").text("");
                         }, 5000);
                     }).catch(function(result) {
-                        $("#{{ config[0]|config_name_to_id }}-alert").text(result);
                         $("#{{ config[0]|config_name_to_id }}-alert").removeClass("d-none");
                         $("#{{ config[0]|config_name_to_id }}-alert").addClass("text-danger");
-                        $("#{{ config[0]|config_name_to_id }}-alert").val("Update Failed!");
+                        $("#{{ config[0]|config_name_to_id }}-alert").text("Update Failed!");
                         setTimeout(function() {
                             $("#{{ config[0]|config_name_to_id }}-alert").addClass("d-none");
                             $("#{{ config[0]|config_name_to_id }}-alert").removeClass("text-danger");
-                            $("#{{ config[0]|config_name_to_id }}-alert").val("");
+                            $("#{{ config[0]|config_name_to_id }}-alert").text("");
                         }, 5000);
                     });
                 });
