@@ -38,7 +38,6 @@ class MySQLService:
 
     def get_by_id(self, table_name: str, primary_fields: list, data: list):
         cursor = self.connection.cursor()
-        print(f"SELECT * FROM {table_name} WHERE {self.join_param_string(primary_fields)}")
         cursor.execute(f"SELECT * FROM {table_name} WHERE {self.join_param_string(primary_fields)}", data)
         result = cursor.fetchone()
         cursor.close()
