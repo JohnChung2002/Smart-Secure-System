@@ -7,7 +7,8 @@ from components.authentication import auth_bp
 from components.alarm import alarm_bp
 from components.unlocking import unlock_bp
 from components.statistics import stats_bp
-from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, check_if_card_exists
+from components.configs import configs_bp
+from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, check_if_card_exists
 
 app = Flask(__name__)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -18,6 +19,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(alarm_bp)
 app.register_blueprint(unlock_bp)
 app.register_blueprint(stats_bp)
+app.register_blueprint(configs_bp)
 
 def read_serial_input():
     while True:
@@ -33,8 +35,8 @@ def read_serial_input():
                 insert_unlock_attempt(input, ser)
             if (input[0] == "Request"):
                 check_if_card_exists(input[1], ser)
-            if (input[0] == "Approval"):
-                print("Yes")
+            if (input[0] == "Update"):
+                update_unlock_attempt
 
 sensor_thread = Thread(target=read_serial_input)
 sensor_thread.daemon = True

@@ -42,7 +42,8 @@ bool waitingForInput = false;
 float duration, distance, tempDistance, height, weight, bmi;
 bool alarmMode = false;
 int unlockID = NAN;
-String currentUserInfo[4];
+int weightThreshold = 2;
+String currentUserInfo[5];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -128,7 +129,6 @@ bool waitForRemoteApprove() {
   }
   while (Serial.available() == 0) {
     if (!waitingForInput) {
-      Serial.println("Approval");
       lcd.clear();
       lcd.print("Wait for approval..");
       waitingForInput = true;
@@ -267,6 +267,11 @@ bool checkIDInDatabase() {
   }  
 }
 
+bool weightCheck() {
+  weight = getWeight();
+
+}
+
 void startInOutScan() {
   approveAccess();
   entryExitStatus = "Start";
@@ -369,6 +374,10 @@ void loop() {
         startInOutScan();
         waitingForCard = false;
         offLight();
+      } else if (command.indexOf('WeightThresholdUpdate|') != -1) {
+        weightThreshold = command.substring(22).toInt();
+        serialOutput = "Weight Threshold Updated to " + String(weightThreshold);
+        Serial.println(serialOutput);
       }
     }
     if (alarmMode) {
@@ -394,8 +403,12 @@ void loop() {
       } else {
         if (checkIDInDatabase()) {
           yellowLight();
-          if (waitForRemoteApprove()) {
+          if (weightCheck()) {
             startInOutScan();
+          } else {
+            if (waitForRemoteApprove()) {
+              startInOutScan();
+            }
           }
         } else {
           denyAccess();

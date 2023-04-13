@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `unlock_logs` (
   `type` ENUM("Entry", "Exit") NOT NULL,
   `status` ENUM("Success", "Failed", "Pending") NOT NULL DEFAULT "Pending",
   `user_id` INT(8),
+  `key_type` ENUM("Card", "Remote") DEFAULT NULL,
   PRIMARY KEY (`unlock_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user_accounts`(`user_id`)
 );
