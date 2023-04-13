@@ -2,7 +2,7 @@ function getHealthStatistics() {
     return new Promise(function(resolve, reject) {
         $.ajax({
             type: "GET",
-            url: "health_statistic",
+            url: "health_statistics",
             success: function (result) {
                 resolve(jQuery.parseJSON(result));
             },
@@ -76,3 +76,5 @@ function initialiseHealthCharts() {
         });
     });
 }
+
+initialiseHealthCharts();
