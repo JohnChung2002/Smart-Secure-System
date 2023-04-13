@@ -40,7 +40,7 @@ def update_person_in_room(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
         result = db.get_by_id("configs", ["config"], ["People in Room"])
-        count = int(sensor_data) + int(result[0])
+        count = int(sensor_data) + int(result[1])
         if count < 0:
             count = 0
         db.update("configs", ["value"], ["config"], [count, "People in Room"])
