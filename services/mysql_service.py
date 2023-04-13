@@ -69,6 +69,13 @@ class MySQLService:
         cursor.close()
         return result
     
+    def get_last_entry_by_id(self, table_name: str, primary_fields: list, order_field: str, data: list):
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT * FROM {table_name} WHERE {self.join_param_string(primary_fields)} ORDER BY {order_field} DESC LIMIT 1", data)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+    
     def get_user_average(self, user_id: int):
         cursor = self.connection.cursor()
         cursor.execute(f'''SELECT AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
