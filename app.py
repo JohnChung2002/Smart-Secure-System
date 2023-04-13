@@ -48,6 +48,7 @@ def index():
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
         weight, height, bmi = list(map(lambda x: round(x, 2), g.dbconn.get_user_average(session["user_id"])))
+        approval = g.dbconn.get_last_entry("unlock_logs", "timestamp")
     return render_template(
         'dashboard.html', 
         name=user[1], 
@@ -55,7 +56,8 @@ def index():
         alarm_status=alarm_status[1],
         weight=weight,
         height=height,
-        bmi=bmi
+        bmi=bmi,
+        approval=approval
     ), 200
 
 @app.errorhandler(404)
