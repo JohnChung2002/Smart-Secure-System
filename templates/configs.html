@@ -6,7 +6,7 @@
     <h1>Configurations</h1>
     <ul>
         {% for config in configs %}
-            <li>{{ config.name }}: {{ config.value }}</li>
+            <li>{{ config[0] }}: {{ config[1] }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
