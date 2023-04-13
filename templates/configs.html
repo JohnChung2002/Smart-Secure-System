@@ -8,9 +8,10 @@
         {% for config in configs %}
             {% if config[2] == 1 %}
             <div class="row">
-                <div class="col-md-4">
-                    <label for="{{ config[0]|lower|replace(' ', '-') }}" class="form-label">{{ config[0] }}</label>
-                    <div class="input-group mb-3">
+                <div class="col-md-5">
+                    <label for="{{ config[0]|lower|replace(' ', '-') }}" class="form-label col-md-8">{{ config[0] }}</label>
+                    <span id="{{ config[0]|lower|replace(' ', '-') }}-alert" class="d-none"></span>
+                    <div class="input-group mb-3 col-md">
                         <input type="text" class="form-control" id="{{ config[0]|lower|replace(' ', '-') }}" name="{{ config[0]|lower|replace(' ', '-') }}" value="{{ config[1] }}">
                         <button class="input-group-text bg-primary">Update</button>
                     </div>
@@ -19,4 +20,56 @@
             {% endif %}
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function updateConfig(config, value) {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    type: "POST",
+                    url: "/configs",
+                    data: {
+                        config: config,
+                        value: value
+                    },
+                    success: function (result) {
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
+            })
+        }
+    </script>
+    {% for config in configs %}
+        {% if config[2] == 1 %}
+            <script>
+                $("#{{ config[0]|lower|replace(' ', '-') }}").click(function() {
+                    updateConfig("{{ config[0]|lower|replace(' ', '-') }}", $("#{{ config[0]|lower|replace(' ', '-') }}").val()).then(function(result) {
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").text(result);
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").removeClass("d-none");
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").addClass("text-success");
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").val("Update Successful!");
+                        setTimeout(function() {
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").addClass("d-none");
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").removeClass("text-success");
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").val("");
+                        }, 5000);
+                    }).catch(function(result) {
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").text(result);
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").removeClass("d-none");
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").addClass("text-danger");
+                        $("#{{ config[0]|lower|replace(' ', '-') }}-alert").val("Update Failed!");
+                        setTimeout(function() {
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").addClass("d-none");
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").removeClass("text-danger");
+                            $("#{{ config[0]|lower|replace(' ', '-') }}-alert").val("");
+                        }, 5000);
+                    });
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

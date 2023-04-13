@@ -29,7 +29,7 @@ def index():
         approval=approval
     ), 200
 
-@dashboard_bp.route('/configs')
+@dashboard_bp.route('/configs', methods=["GET"])
 @admin_auth_middleware
 def configs():
     with g.dbconn:

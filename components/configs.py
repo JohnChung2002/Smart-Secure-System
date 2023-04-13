@@ -1,7 +1,23 @@
-from flask import Blueprint, g, session
+from flask import Blueprint, g, session, request
 from services.auth_middleware import auth_middleware, admin_auth_middleware
 
 configs_bp = Blueprint('configs', __name__)
+
+@configs_bp.route('/configs', methods=["POST"])
+@admin_auth_middleware
+def configs_post():
+    request.data = request.get_json()
+    if request.data is None:
+        return "Invalid data", 400
+    if "config" not in request.data or "value" not in request.data:
+        return "Invalid data", 400
+    with g.dbconn:
+        count = g.dbconn.update_config(request.data["config"], request.data["value"])
+        if count == 0:
+            return "Invalid config", 400
+    return "Success", 200
+
+
 
 @configs_bp.route('/profile')
 @auth_middleware
