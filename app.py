@@ -52,7 +52,7 @@ def index():
         'dashboard.html', 
         name=user[1], 
         role=session["user_role"], 
-        alarm_status=alarm_status[1]
+        alarm_status=alarm_status[1],
         weight=weight,
         height=height,
         bmi=bmi
