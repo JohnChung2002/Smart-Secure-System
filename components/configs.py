@@ -13,7 +13,7 @@ def configs_post():
     if "config" not in data or "value" not in data:
         return "Invalid data", 400
     with g.dbconn:
-        data["config"] = data["config"].replace("-", " ").replace("9", "(").replace("0", ")").capwords()
+        data["config"] = capwords(data["config"].replace("-", " ").replace("9", "(").replace("0", ")"))
         count = g.dbconn.update_config(data["config"], data["value"])
         if count == 0:
             return "Invalid config", 400
