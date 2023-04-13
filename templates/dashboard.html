@@ -50,13 +50,7 @@
         </div>
     </div>
     <div>
-      <canvas id="weightChart"></canvas>
-    </div>
-    <div>
-      <canvas id="heightChart"></canvas>
-    </div>
-    <div>
-      <canvas id="bmiChart"></canvas>
+      <canvas id="healthChart"></canvas>
     </div>
 </div>
 
@@ -69,7 +63,6 @@
 <script>
     $(function () {
         $('#alarmButton').click(function () {
-            // Send request to trigger alarm
             $.get('/alarm', function (data) {
                 $('#alarm_status').text(data);
             });

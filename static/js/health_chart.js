@@ -18,37 +18,60 @@ function initialiseHealthCharts() {
     const heightChart = document.getElementById('heightChart');
     const bmiChart = document.getElementById('bmiChart');
     getHealthStatistics().then(function (result) {
-        weightData = {x: result.index, y: result.weight_value};
-        heightData = {x: result.index, y: result.height_value};
-        bmiData = {x: result.index, y: result.bmi_value};
-        new Chart(weightChart, {
+        var data = JSON.parse(xhr.responseText);
+        // Create a chart
+        var ctx = document.getElementById('healthChart').getContext('2d');
+        var chart = new Chart(ctx, {
             type: 'line',
             data: {
-                datasets: [{
-                    label: 'Weight',
-                    data: weightData,
-                    borderWidth: 1
+            labels: data.index,
+            datasets: [{
+                label: 'Height',
+                data: data.height_value,
+                borderColor: 'red',
+                fill: false
+            }, {
+                label: 'Weight',
+                data: data.weight_value,
+                borderColor: 'blue',
+                fill: false
+            }, {
+                label: 'BMI',
+                data: data.bmi_value,
+                borderColor: 'green',
+                fill: false
+            }]
+            },
+            options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Health Statistics'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                }
+                }],
+                yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Value'
+                }
                 }]
             }
-        });
-        new Chart(heightChart, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'Height',
-                    data: heightData,
-                    borderWidth: 1
-                }]
-            }
-        });
-        new Chart(bmiChart, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    label: 'BMI',
-                    data: bmiData,
-                    borderWidth: 1
-                }]
             }
         });
     });
