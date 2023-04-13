@@ -36,7 +36,7 @@ def read_serial_input():
             if (input[0] == "Request"):
                 check_if_card_exists(input[1], ser)
             if (input[0] == "Update"):
-                update_unlock_attempt
+                update_unlock_attempt(input, ser)
 
 sensor_thread = Thread(target=read_serial_input)
 sensor_thread.daemon = True

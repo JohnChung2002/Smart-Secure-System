@@ -43,13 +43,14 @@
 <div class="container mt-4">
     <!-- Conditional row showing approve/reject -->
     {% if approval is not none: %}
-    <div class="row">
+    <div class="row" id="approvalAlert">
         <div class="col-md-6">
             <div class="alert" role="alert">
                 There is a approval request for the room.
                 <!--Approve and reject button-->
-                <button class="btn btn-success" id="approveButton-{{ approval[0] }}">Approve</button>
-                <button class="btn btn-danger" id="rejectButton-{{ approval[0] }}">Reject</button>
+                <button class="btn btn-success" id="approveButton">Approve</button>
+                <button class="btn btn-danger" id="rejectButton">Reject</button>
+            </div>
         </div>
     </div>
     {% endif %}
@@ -79,6 +80,16 @@
         $('#alarmButton').click(function () {
             $.get('/alarm', function (data) {
                 $('#alarm_status').text(data);
+            });
+        });
+        $('#approveButton').click(function () {
+            $.get('/approve/{{ approval[0] }}', function (data) {
+                $('#approvalAlert').addClass("d-none");
+            });
+        });
+        $('#rejectButton').click(function () {
+            $.get('/reject/{{ approval[0] }}', function (data) {
+                $('#approvalAlert').addClass("d-none");
             });
         });
     });

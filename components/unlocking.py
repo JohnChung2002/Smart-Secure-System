@@ -13,6 +13,24 @@ def unlock():
 @auth_middleware
 def approve(id):
     with g.dbconn:
+        data = g.dbconn.get_by_id("unlock_logs", ["unlock_id"], [id])
+        if data is None:
+            return "Invalid unlock id", 400
+        if data[3] != "Pending":
+            return "Invalid unlock id", 400
         g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Success", id])
     g.ser.write(b"Approved")
     return "Approved", 200
+
+@unlock_bp.route('/reject/<id>')
+@auth_middleware
+def reject(id):
+    with g.dbconn:
+        data = g.dbconn.get_by_id("unlock_logs", ["unlock_id"], [id])
+        if data is None:
+            return "Invalid unlock id", 400
+        if data[3] != "Pending":
+            return "Invalid unlock id", 400
+        g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Rejected", id])
+    g.ser.write(b"Rejected")
+    return "Rejected", 200
