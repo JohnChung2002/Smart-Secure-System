@@ -11,7 +11,7 @@ def index():
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
         health_data = g.dbconn.get_user_average(session["user_id"])
-        if health_data is not (None, None, None):
+        if health_data[0] is not None and health_data[1] is not None and health_data[2] is not None:
             health_data = {
                 "weight": round(health_data[0], 2),
                 "height": round(health_data[1], 2),
