@@ -52,9 +52,9 @@ def index():
         health_data = g.dbconn.get_user_average(session["user_id"])
         if health_data is not None:
             health_data = {
-                "weight": health_data[0],
-                "height": health_data[1],
-                "bmi": health_data[2]
+                "weight": round(health_data[0], 2),
+                "height": round(health_data[1], 2),
+                "bmi": round(health_data[2], 2)
             }
         approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     return render_template(
