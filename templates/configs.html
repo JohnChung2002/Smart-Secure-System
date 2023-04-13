@@ -4,9 +4,12 @@
 
 {% block content %}
     <h1>Configurations</h1>
-    <ul>
+    <form action="/configs" method="post">
         {% for config in configs %}
-            <li>{{ config[0] }}: {{ config[1] }}</li>
+            <div class="form-group">
+                <label for="{{ config[0] }}">{{ config[0] }}</label>
+                <input type="text" class="form-control" id="{{ config[0] }}" name="{{ config[0] }}" value="{{ config[1] }}">
+            </div>
         {% endfor %}
-    </ul>
+    </form>
 {% endblock %}
