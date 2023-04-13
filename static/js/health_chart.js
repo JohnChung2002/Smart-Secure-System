@@ -4,7 +4,7 @@ function getHealthStatistics() {
             type: "GET",
             url: "health_statistics",
             success: function (result) {
-                resolve(jQuery.parseJSON(result));
+                resolve(result);
             },
             error: function (result) {
                 reject(result);
@@ -17,8 +17,7 @@ function initialiseHealthCharts() {
     const weightChart = document.getElementById('weightChart');
     const heightChart = document.getElementById('heightChart');
     const bmiChart = document.getElementById('bmiChart');
-    getHealthStatistics().then(function (result) {
-        var data = JSON.parse(xhr.responseText);
+    getHealthStatistics().then(function (data) {
         // Create a chart
         var ctx = document.getElementById('healthChart').getContext('2d');
         var chart = new Chart(ctx, {
