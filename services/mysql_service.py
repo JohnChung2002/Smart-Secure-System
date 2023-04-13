@@ -108,6 +108,17 @@ class MySQLService:
 
     def update_config(self, config: str, value: str):
         cursor = self.connection.cursor()
+        cursor.execute(f"SELECT * FROM configs WHERE config = %s AND editable = 1", [config])
+        result = cursor.fetchone()
+        if result is None:
+            cursor.close()
+            return 0
+        if result[3] == "number":
+            try:
+                value = int(value)
+            except:
+                cursor.close()
+                return 0
         cursor.execute(f"UPDATE configs SET value = %s WHERE config = %s AND editable = 1", [value, config])
         self.connection.commit()
         count = cursor.rowcount
