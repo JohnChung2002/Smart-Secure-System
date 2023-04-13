@@ -7,14 +7,14 @@ configs_bp = Blueprint('configs', __name__)
 @configs_bp.route('/configs', methods=["POST"])
 @admin_auth_middleware
 def configs_post():
-    data= request.get_json()
-    if request.data is None:
+    data = request.get_json()
+    if data is None:
         return "Invalid data", 400
-    if "config" not in request.data or "value" not in request.data:
+    if "config" not in data or "value" not in data:
         return "Invalid data", 400
     with g.dbconn:
         data["config"] = data["config"].replace("-", " ").replace("9", "(").replace("0", ")").capwords()
-        count = g.dbconn.update_config(request.data["config"], request.data["value"])
+        count = g.dbconn.update_config(data["config"], data["value"])
         if count == 0:
             return "Invalid config", 400
     return "Success", 200
