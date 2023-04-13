@@ -31,5 +31,11 @@ def index():
 @admin_auth_middleware
 def configs():
     with g.dbconn:
+        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         configs = g.dbconn.get_all("configs")
-    return render_template('configs.html', configs=configs), 200
+    return render_template(
+        'configs.html', 
+        name=user[1], 
+        role=session["user_role"], 
+        configs=configs
+    ), 200
