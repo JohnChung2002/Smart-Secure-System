@@ -11,12 +11,14 @@ def index():
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
         health_data = g.dbconn.get_user_average(session["user_id"])
-        if health_data is not None:
+        if health_data is not (None, None, None):
             health_data = {
                 "weight": round(health_data[0], 2),
                 "height": round(health_data[1], 2),
                 "bmi": round(health_data[2], 2)
             }
+        else:
+            health_data = None
         approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     return render_template(
         'dashboard.html', 

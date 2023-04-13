@@ -24,7 +24,10 @@
             {% if health_data is not none: %}
               <h2>Height: {{ health_data['height'] }}, Weight: {{ health_data['weight'] }}, BMI: {{ health_data['bmi'] }}</h2>
             {% endif %}
-            <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
+              <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
+            {% if role == 'Admin' %}
+              <button class="btn btn-success" id="unlockButton">Remote Unlock</button>
+            {% endif %}
         </div>
     </div>
     <div>
@@ -55,4 +58,15 @@
         });
     });
 </script>
+{% if role == 'Admin' %}
+<script>
+    $(function () {
+        $('#unlockButton').click(function () {
+            $.get('/unlock', function (data) {
+                console.log("Unlocked");
+            });
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}

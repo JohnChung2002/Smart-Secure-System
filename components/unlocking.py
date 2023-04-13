@@ -1,10 +1,10 @@
 from flask import Blueprint, g
-from services.auth_middleware import auth_middleware
+from services.auth_middleware import auth_middleware, admin_auth_middleware
 
 unlock_bp = Blueprint('unlock', __name__)
 
 @unlock_bp.route('/unlock')
-@auth_middleware
+@admin_auth_middleware
 def unlock():
     g.ser.write(b"Remote Unlock")
     return "Unlock", 200

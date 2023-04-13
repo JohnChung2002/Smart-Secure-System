@@ -97,5 +97,8 @@ CREATE TABLE IF NOT EXISTS `remote_approval` (
 );
 CREATE TABLE IF NOT EXISTS `configs` (
   `config` VARCHAR(255) NOT NULL,
-  `value` VARCHAR(255) NOT NULL
+  `value` VARCHAR(255) NOT NULL,
+  `editable` TINYINT(1) UNSIGNED NOT NULL,
+  `type` ENUM("String", "Integer") NOT NULL,
+  PRIMARY KEY (`config`)
 );
