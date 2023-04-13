@@ -7,7 +7,7 @@ def check_if_card_exists(card_id, ser):
         if (result is None):
             ser.write(b"Invalid")
         else:
-            temp = f"Exists|{result[0]}|{result[1]}|{result[4]}|{result[6]}"
+            temp = f"Exists|{result[0]}|{result[1]}|{result[3]}|{result[6]}"
             ser.write(str.encode(temp))
 
 def insert_entry_exit(sensor_data):

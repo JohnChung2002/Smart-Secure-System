@@ -269,8 +269,9 @@ bool checkIDInDatabase() {
 }
 
 bool weightCheck() {
+  float userWeight = currentUserInfo[3].toFloat();
   weight = getWeight();
-
+  return (weight >= userWeight - weightThreshold && weight <= userWeight + weightThreshold);
 }
 
 void startInOutScan() {
