@@ -49,7 +49,13 @@ def index():
     with g.dbconn:
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-        weight, height, bmi = list(map(lambda x: round(x, 2), g.dbconn.get_user_average(session["user_id"])))
+        health_data = g.dbconn.get_user_average(session["user_id"])
+        if health_data is not None:
+            health_data = {
+                "weight": health_data[0],
+                "height": health_data[1],
+                "bmi": health_data[2]
+            }
         approval = g.dbconn.get_last_entry("unlock_logs", "timestamp")
         if approval[3] != "Pending": 
             approval = None
@@ -58,9 +64,7 @@ def index():
         name=user[1], 
         role=session["user_role"], 
         alarm_status=alarm_status[1],
-        weight=weight,
-        height=height,
-        bmi=bmi,
+        health_data=health_data,
         approval=approval
     ), 200
 
