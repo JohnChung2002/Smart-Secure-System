@@ -47,7 +47,7 @@ def index():
     with g.dbconn:
         user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-        weight, height, bmi = g.dbconn.get_user_average(session["user_id"])
+        weight, height, bmi = list(map(lambda x: round(x, 2), g.dbconn.get_user_average(session["user_id"])))
     return render_template(
         'dashboard.html', 
         name=user[1], 
