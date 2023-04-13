@@ -56,7 +56,7 @@ def index():
                 "height": health_data[1],
                 "bmi": health_data[2]
             }
-        approval = g.dbconn.get_last_entry("unlock_logs", ["status"], "timestamp", ["Pending"])
+        approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     return render_template(
         'dashboard.html', 
         name=user[1], 
