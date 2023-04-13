@@ -30,10 +30,10 @@
                     type: "POST",
                     url: "/configs",
                     contentType: 'application/json',
-                    data: {
+                    data: JSON.stringify({
                         config: config,
                         value: value
-                    },
+                    }),
                     success: function (result) {
                         resolve(result);
                     },
