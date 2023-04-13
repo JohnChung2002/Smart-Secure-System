@@ -1,4 +1,4 @@
-from flask import Blueprint, g
+from flask import Blueprint, g, session
 from services.auth_middleware import auth_middleware, admin_auth_middleware
 
 unlock_bp = Blueprint('unlock', __name__)
@@ -7,7 +7,7 @@ unlock_bp = Blueprint('unlock', __name__)
 @admin_auth_middleware
 def unlock():
     with g.dbconn:
-        g.dbconn.insert("unlock_logs", ["type", "user_id", "status", "key_type"], ["Entry", g.session["user_id"], "Success", "Remote"])
+        g.dbconn.insert("unlock_logs", ["type", "user_id", "status", "key_type"], ["Entry", session["user_id"], "Success", "Remote"])
     g.ser.write(b"Remote Unlock")
     return "Unlock", 200
 
@@ -21,7 +21,7 @@ def approve(id):
         if data[3] != "Pending":
             return "Invalid unlock id", 400
         g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Success", id])
-        g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [g.session["user_id"], id, "Approved"])
+        g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [session["user_id"], id, "Approved"])
     g.ser.write(b"Approved")
     return "Approved", 200
 
@@ -35,6 +35,6 @@ def reject(id):
         if data[3] != "Pending":
             return "Invalid unlock id", 400
         g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Failed", id])
-        g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [g.session["user_id"], id, "Denied"])
+        g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [session["user_id"], id, "Denied"])
     g.ser.write(b"Rejected")
     return "Rejected", 200
