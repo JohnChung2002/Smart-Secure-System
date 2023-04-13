@@ -8,6 +8,7 @@ from components.alarm import alarm_bp
 from components.unlocking import unlock_bp
 from components.statistics import stats_bp
 from components.configs import configs_bp
+from components.dashboard import dashboard_bp
 from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, check_if_card_exists
 
 app = Flask(__name__)
@@ -20,6 +21,7 @@ app.register_blueprint(alarm_bp)
 app.register_blueprint(unlock_bp)
 app.register_blueprint(stats_bp)
 app.register_blueprint(configs_bp)
+app.register_blueprint(dashboard_bp)
 
 def read_serial_input():
     while True:
@@ -41,30 +43,6 @@ def read_serial_input():
 sensor_thread = Thread(target=read_serial_input)
 sensor_thread.daemon = True
 sensor_thread.start()
-
-#Dashboard
-@app.route('/')
-@auth_middleware
-def index():
-    with g.dbconn:
-        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
-        alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-        health_data = g.dbconn.get_user_average(session["user_id"])
-        if health_data is not None:
-            health_data = {
-                "weight": round(health_data[0], 2),
-                "height": round(health_data[1], 2),
-                "bmi": round(health_data[2], 2)
-            }
-        approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
-    return render_template(
-        'dashboard.html', 
-        name=user[1], 
-        role=session["user_role"], 
-        alarm_status=alarm_status[1],
-        health_data=health_data,
-        approval=approval
-    ), 200
 
 @app.errorhandler(404)
 def page_not_found(e):
