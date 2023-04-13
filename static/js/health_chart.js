@@ -52,20 +52,20 @@ function initialiseHealthCharts() {
                     intersect: true
                 },
                 scales: {
-                    xAxis: [{
+                    x: {
                         display: true,
-                        scaleLabel: {
+                        title: {
                             display: true,
-                            labelString: 'Date'
+                            text: 'Date'
                         }
-                    }],
-                    yAxis: [{
+                    },
+                    y: {
                         display: true,
-                        scaleLabel: {
+                        title: {
                             display: true,
-                            labelString: 'Value'
+                            text: 'Value'
                         }
-                    }]
+                    }
                 }
             }
         });
