@@ -31,6 +31,6 @@ def reject(id):
             return "Invalid unlock id", 400
         if data[3] != "Pending":
             return "Invalid unlock id", 400
-        g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Rejected", id])
+        g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Failed", id])
     g.ser.write(b"Rejected")
     return "Rejected", 200
