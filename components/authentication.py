@@ -25,7 +25,7 @@ def login_post():
                 if ph.verify(result[2], password):
                     session["user_id"] = result[0]
                     session["user_role"] = result[3]
-                return redirect("/"), 200
+                return redirect("/")
             except:
                 pass
     return render_template('login.html', message="Invalid username or password"), 401
@@ -35,4 +35,4 @@ def login_post():
 def logout():
     session.pop('user_id', None)
     session.pop('user_role', None)
-    return redirect(url_for('auth.login')), 200
+    return redirect(url_for('auth.login'))
