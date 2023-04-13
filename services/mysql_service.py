@@ -113,6 +113,9 @@ class MySQLService:
         if result is None:
             cursor.close()
             return 0
+        if result[1] == value:
+            cursor.close()
+            return 1
         if result[3] == "number":
             try:
                 value = int(value)
