@@ -13,7 +13,7 @@
                     <span id="{{ config[0]|config_name_to_id }}-alert" class="d-none"></span>
                     <div class="input-group mb-3 col-md">
                         <input type="{{ config[3] }}" class="form-control" id="{{ config[0]|config_name_to_id }}" name="{{ config[0]|config_name_to_id }}" value="{{ config[1] }}">
-                        <button class="input-group-text bg-primary">Update</button>
+                        <button class="input-group-text bg-primary" id="{{ config[0]|config_name_to_id }}-btn">Update</button>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
     {% for config in configs %}
         {% if config[2] == 1 %}
             <script>
-                $("#{{ config[0]|config_name_to_id }}").click(function() {
+                $("#{{ config[0]|config_name_to_id }}-btn").click(function() {
                     updateConfig("{{ config[0]|config_name_to_id }}", $("#{{ config[0]|config_name_to_id }}").val()).then(function(result) {
                         $("#{{ config[0]|config_name_to_id }}-alert").text(result);
                         $("#{{ config[0]|config_name_to_id }}-alert").removeClass("d-none");
