@@ -350,8 +350,6 @@ void loop() {
   do {
     if (Serial.available() != 0) {
       String command = Serial.readString();
-      Serial.println(command);
-      Serial.println(command.indexOf('WeightThresholdUpdate|'));
       if (command == "Alarm On") {
         alarmMode = true;
       } else if (command == "Alarm Off") {
