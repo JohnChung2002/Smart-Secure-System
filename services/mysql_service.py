@@ -30,14 +30,14 @@ class MySQLService:
         return ', '.join([('%s = %%s' %(key)) for key in param_list])
 
     def get_all(self, table_name: str):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM {table_name}")
         result = cursor.fetchall()
         cursor.close()
         return result
 
     def get_by_id(self, table_name: str, primary_fields: list, data: list):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM {table_name} WHERE {self.join_param_string(primary_fields)}", data)
         result = cursor.fetchone()
         cursor.close()
@@ -62,22 +62,22 @@ class MySQLService:
         cursor.close()
 
     def get_last_entry(self, table_name: str, primary_field: str):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM {table_name} ORDER BY {primary_field} DESC LIMIT 1")
         result = cursor.fetchone()
         cursor.close()
         return result
     
     def get_last_entry_by_id(self, table_name: str, primary_fields: list, order_field: str, data: list):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM {table_name} WHERE {self.join_param_string(primary_fields)} ORDER BY {order_field} DESC LIMIT 1", data)
         result = cursor.fetchone()
         cursor.close()
         return result
     
     def get_user_average(self, user_id: int):
-        cursor = self.connection.cursor()
-        cursor.execute(f'''SELECT AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f'''SELECT AVG(t1.weight) as weight, AVG(t1.height) as height, AVG(t1.bmi) as bmi
         FROM in_out_logs t1
         INNER JOIN (
         SELECT unlock_id, MIN(timestamp) AS min_timestamp
@@ -91,7 +91,7 @@ class MySQLService:
         return result
     
     def get_user_health_statistics(self, user_id: int):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f'''SELECT t3.user_id, DATE(t1.timestamp) as date, AVG(t1.weight) as avg_weight, AVG(t1.height) as avg_height, AVG(t1.bmi) as avg_bmi
         FROM in_out_logs t1
         INNER JOIN (
@@ -107,16 +107,16 @@ class MySQLService:
         return result
 
     def update_config(self, config: str, value: str):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute(f"SELECT * FROM configs WHERE config = %s AND editable = 1", [config])
         result = cursor.fetchone()
         if result is None:
             cursor.close()
             return 0
-        if result[1] == value:
+        if result["value"] == value:
             cursor.close()
             return 1
-        if result[3] == "number":
+        if result["type"] == "number":
             try:
                 value = int(value)
             except:
@@ -129,7 +129,7 @@ class MySQLService:
         return count
     
     def get_user_access_logs(self):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(dictionary=True)
         cursor.execute('''SELECT 
             ul.unlock_id, 
             ul.timestamp AS unlock_timestamp, 
@@ -154,3 +154,20 @@ class MySQLService:
         result = cursor.fetchall()
         cursor.close()
         return result
+    
+    def update_profile(self, user_id: int, field: str, value: str):
+        cursor = self.connection.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM user_details WHERE user_id = %s", [user_id])
+        result = cursor.fetchone()
+        if field not in result:
+            cursor.close()
+            return 0
+        if result[field] == value:
+            cursor.close()
+            return 1
+        cursor.execute(f"UPDATE user_details SET {field} = %s WHERE user_id = %s", [value, user_id])
+        self.connection.commit()
+        count = cursor.rowcount
+        cursor.close()
+        return count
+        

@@ -47,12 +47,12 @@
             });
         });
         $('#approveButton').click(function () {
-            $.get('/approve/{{ approval[0] }}', function (data) {
+            $.get('/approve/{{ approval["unlock_id"] }}', function (data) {
                 $('#approvalAlert').addClass("d-none");
             });
         });
         $('#rejectButton').click(function () {
-            $.get('/reject/{{ approval[0] }}', function (data) {
+            $.get('/reject/{{ approval["unlock_id"] }}', function (data) {
                 $('#approvalAlert').addClass("d-none");
             });
         });

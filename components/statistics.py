@@ -17,10 +17,10 @@ def health_statistics_by_id(id):
     
 def get_user_health_statistics(conn, id):
     results = conn.get_user_health_statistics(id)
-    index = list(map(lambda x: x[1].strftime('%Y-%m-%d'), results))
-    weight_value = list(map(lambda x: round(x[2], 2), results))
-    height_value = list(map(lambda x: round(x[3], 2), results))
-    bmi_value = list(map(lambda x: round(x[4], 2), results))
+    index = list(map(lambda x: x["date"].strftime('%Y-%m-%d'), results))
+    weight_value = list(map(lambda x: round(x["avg_weight"], 2), results))
+    height_value = list(map(lambda x: round(x["avg_height"], 2), results))
+    bmi_value = list(map(lambda x: round(x["avg_bmi"], 2), results))
     return {"index": index, "weight_value": weight_value, "height_value": height_value, "bmi_value": bmi_value}, 200
 
 @stats_bp.route('/access_logs')

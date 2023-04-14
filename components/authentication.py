@@ -23,8 +23,8 @@ def login_post():
         if result is not None:
             try:
                 if ph.verify(result[2], password):
-                    session["user_id"] = result[0]
-                    session["user_role"] = result[3]
+                    session["user_id"] = result["user_id"]
+                    session["user_role"] = result["role"]
                 return redirect("/")
             except:
                 pass

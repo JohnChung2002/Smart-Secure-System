@@ -8,7 +8,7 @@ alarm_bp = Blueprint('alarm', __name__)
 def alarm():
     with g.dbconn:
         result = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
-        status = "On" if result[1] == "Off" else "Off"
+        status = "On" if result["Alarm Status"] == "Off" else "Off"
         status_message = f"Alarm {status}"
         g.ser.write(str.encode(status_message))
         g.dbconn.update("configs", ["value"], ["config"], [status, "Alarm Status"])

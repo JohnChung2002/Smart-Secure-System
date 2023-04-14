@@ -24,6 +24,10 @@ def configs_post():
 @configs_bp.route('/profile')
 @auth_middleware
 def profile():
+    data = request.get_json()
+    if data is None:
+        return "Invalid data", 400
+    if "field" not in data or "value" not in data:
+        return "Invalid data", 400
     with g.dbconn:
-        result = g.dbconn.get_by_id("user_accounts", ["user_id"], [session["user_id"]])
-        return {"username": result[1], "email": result[4], "role": result[3]}, 200
+        g.dbconn.update_profile(session["user_id"], data["field"], data["value"])

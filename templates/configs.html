@@ -6,14 +6,14 @@
     <div class="container">
         <h1>Configurations</h1>
         {% for config in configs %}
-            {% if config[2] == 1 %}
+            {% if config['editable'] == 1 %}
             <div class="row">
                 <div class="col-md-5">
-                    <label for="{{ config[0]|config_name_to_id }}" class="form-label col-md-8">{{ config[0] }}</label>
-                    <span id="{{ config[0]|config_name_to_id }}-alert" class="d-none"></span>
+                    <label for="{{ config['config']|config_name_to_id }}" class="form-label col-md-8">{{ config['config'] }}</label>
+                    <span id="{{ config['config']|config_name_to_id }}-alert" class="d-none"></span>
                     <div class="input-group mb-3 col-md">
-                        <input type="{{ config[3] }}" class="form-control" id="{{ config[0]|config_name_to_id }}" name="{{ config[0]|config_name_to_id }}" value="{{ config[1] }}">
-                        <button class="input-group-text bg-primary" id="{{ config[0]|config_name_to_id }}-btn">Update</button>
+                        <input type="{{ config['type'] }}" class="form-control" id="{{ config['config']|config_name_to_id }}" name="{{ config['config']|config_name_to_id }}" value="{{ config['value'] }}">
+                        <button class="input-group-text bg-primary" id="{{ config['config']|config_name_to_id }}-btn">Update</button>
                     </div>
                 </div>
             </div>
@@ -45,26 +45,26 @@
         }
     </script>
     {% for config in configs %}
-        {% if config[2] == 1 %}
+        {% if config['editable'] == 1 %}
             <script>
-                $("#{{ config[0]|config_name_to_id }}-btn").click(function() {
-                    updateConfig("{{ config[0]|config_name_to_id }}", $("#{{ config[0]|config_name_to_id }}").val()).then(function(result) {
-                        $("#{{ config[0]|config_name_to_id }}-alert").removeClass("d-none");
-                        $("#{{ config[0]|config_name_to_id }}-alert").addClass("text-success");
-                        $("#{{ config[0]|config_name_to_id }}-alert").text("Update Successful!");
+                $("#{{ config['config']|config_name_to_id }}-btn").click(function() {
+                    updateConfig("{{ config['config']|config_name_to_id }}", $("#{{ config['config']|config_name_to_id }}").val()).then(function(result) {
+                        $("#{{ config['config']|config_name_to_id }}-alert").removeClass("d-none");
+                        $("#{{ config['config']|config_name_to_id }}-alert").addClass("text-success");
+                        $("#{{ config['config']|config_name_to_id }}-alert").text("Update Successful!");
                         setTimeout(function() {
-                            $("#{{ config[0]|config_name_to_id }}-alert").addClass("d-none");
-                            $("#{{ config[0]|config_name_to_id }}-alert").removeClass("text-success");
-                            $("#{{ config[0]|config_name_to_id }}-alert").text("");
+                            $("#{{ config['config']|config_name_to_id }}-alert").addClass("d-none");
+                            $("#{{ config['config']|config_name_to_id }}-alert").removeClass("text-success");
+                            $("#{{ config['config']|config_name_to_id }}-alert").text("");
                         }, 5000);
                     }).catch(function(result) {
-                        $("#{{ config[0]|config_name_to_id }}-alert").removeClass("d-none");
-                        $("#{{ config[0]|config_name_to_id }}-alert").addClass("text-danger");
-                        $("#{{ config[0]|config_name_to_id }}-alert").text("Update Failed!");
+                        $("#{{ config['config']|config_name_to_id }}-alert").removeClass("d-none");
+                        $("#{{ config['config']|config_name_to_id }}-alert").addClass("text-danger");
+                        $("#{{ config['config']|config_name_to_id }}-alert").text("Update Failed!");
                         setTimeout(function() {
-                            $("#{{ config[0]|config_name_to_id }}-alert").addClass("d-none");
-                            $("#{{ config[0]|config_name_to_id }}-alert").removeClass("text-danger");
-                            $("#{{ config[0]|config_name_to_id }}-alert").text("");
+                            $("#{{ config['config']|config_name_to_id }}-alert").addClass("d-none");
+                            $("#{{ config['config']|config_name_to_id }}-alert").removeClass("text-danger");
+                            $("#{{ config['config']|config_name_to_id }}-alert").text("");
                         }, 5000);
                     });
                 });

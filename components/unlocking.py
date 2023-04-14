@@ -18,7 +18,7 @@ def approve(id):
         data = g.dbconn.get_by_id("unlock_logs", ["unlock_id"], [id])
         if data is None:
             return "Invalid unlock id", 400
-        if data[3] != "Pending":
+        if data["status"] != "Pending":
             return "Invalid unlock id", 400
         g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Success", id])
         g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [session["user_id"], id, "Approved"])
@@ -32,7 +32,7 @@ def reject(id):
         data = g.dbconn.get_by_id("unlock_logs", ["unlock_id"], [id])
         if data is None:
             return "Invalid unlock id", 400
-        if data[3] != "Pending":
+        if data["status"] != "Pending":
             return "Invalid unlock id", 400
         g.dbconn.update("unlock_logs", ["status"], ["unlock_id"], ["Failed", id])
         g.dbconn.insert("remote_approval", ["user_id", "unlock_id", "status"], [session["user_id"], id, "Denied"])
