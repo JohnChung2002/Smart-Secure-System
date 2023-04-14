@@ -51,6 +51,6 @@ def intialise_data(ser):
         result = db.get_all("configs")
     for config in result:
         if config["config"] == "Door Height (cm)":
-            ser.write(str.encode(f"DoorHeightUpdate|{result['value']}"))
+            ser.write(str.encode(f"DoorHeightUpdate|{config['value']}"))
         elif config["config"] == "Weight Threshold (kg)":
-            ser.write(str.encode(f"WeightThresholdUpdate|{result['value']}"))
+            ser.write(str.encode(f"WeightThresholdUpdate|{config['value']}"))
