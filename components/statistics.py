@@ -1,4 +1,4 @@
-from flask import Blueprint, g, session
+from flask import Blueprint, g, session, jsonify
 from services.auth_middleware import auth_middleware, admin_auth_middleware
 
 stats_bp = Blueprint('statistics', __name__)
@@ -26,4 +26,4 @@ def get_user_health_statistics(conn, id):
 @stats_bp.route('/access_logs')
 def get_user_access_logs():
     with g.dbconn:
-        return g.dbconn.get_user_access_logs()
+        return jsonify(g.dbconn.get_user_access_logs())
