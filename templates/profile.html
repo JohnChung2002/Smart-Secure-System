@@ -86,7 +86,7 @@
 {% for field in fields %}
 <script>
     $("#{{ field }}-btn").click(function() {
-        updateConfig("{{ field }}", $("#{{ field }}").val()).then(function(result) {
+        updateProfile("{{ field }}", $("#{{ field }}").val()).then(function(result) {
             $("#{{ field }}-alert").removeClass("d-none");
             $("#{{ field }}-alert").addClass("text-success");
             $("#{{ field }}-alert").text("Update Successful!");
