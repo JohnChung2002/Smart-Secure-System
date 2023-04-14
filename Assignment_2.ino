@@ -44,6 +44,7 @@ int unlockID = NAN;
 int weightThreshold = 2;
 int doorHeight = 185;
 String currentUserInfo[5];
+int invalidTries = 0;
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -276,6 +277,7 @@ void startInOutScan() {
   memset(currentUserInfo, 0, sizeof(currentUserInfo));
   personCount = 0;
   alarmMode = false;
+  invalidTries = 0;
 }
 
 String checkInOut() {
@@ -348,6 +350,9 @@ void loop() {
   noStopDelay(1000);
   offLight();
   do {
+    if (invalidTries >= 3 && alarmMode == false) {
+      alarmMode = true;
+    }
     if (Serial.available() != 0) {
       String command = Serial.readString();
       if (command == "Alarm On") {
@@ -408,6 +413,7 @@ void loop() {
             }
           }
         } else {
+          invalidTries += 1;
           denyAccess();
         }
       }

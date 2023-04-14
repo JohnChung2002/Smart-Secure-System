@@ -23,8 +23,6 @@ def configs_post():
             g.ser.write(str.encode(f"WeightThresholdUpdate|{data['value']}"))
     return "Success", 200
 
-
-
 @configs_bp.route('/profile', methods=["POST"])
 @auth_middleware
 def profile_post():
