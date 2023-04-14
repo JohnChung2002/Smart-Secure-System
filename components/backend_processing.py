@@ -1,4 +1,5 @@
 from services.mysql_service import MySQLService
+import time
 
 def check_if_card_exists(card_id, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
@@ -54,3 +55,9 @@ def intialise_data(ser):
             ser.write(str.encode(f"DoorHeightUpdate|{config['value']}"))
         elif config["config"] == "Weight Threshold (kg)":
             ser.write(str.encode(f"WeightThresholdUpdate|{config['value']}"))
+        else:
+            continue
+        start = time.time()
+        while True:
+            if time.time() - start > 1:
+                break
