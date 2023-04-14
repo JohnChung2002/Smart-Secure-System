@@ -51,7 +51,7 @@ USE `smart_lock_system`;
 CREATE TABLE IF NOT EXISTS `user_details` (
   `user_id` INT(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `age` INT(3) NOT NULL,
+  `date_of_birth` DATE NOT NULL,
   `weight` NUMERIC(5,2) NOT NULL,
   `height` NUMERIC(5,2) NOT NULL,
   `card_id` CHAR(8) NOT NULL,

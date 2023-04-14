@@ -23,10 +23,8 @@
 #define ENTRY_SENSOR A1
 #define EXIT_SENSOR A2
 
-#define ENTRY_THRESHOLD 200 // adjust this value for your sensor
-#define EXIT_THRESHOLD 200 // adjust this value for your sensor
-
-#define DOOR_HEIGHT 185
+#define ENTRY_THRESHOLD 200
+#define EXIT_THRESHOLD 200 
 
 byte readCard[4];
 String ExitTag = "A6D715E";
@@ -44,6 +42,7 @@ bool alarmMode = false;
 bool approved = false;
 int unlockID = NAN;
 int weightThreshold = 2;
+int doorHeight = 185;
 String currentUserInfo[5];
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);  
@@ -81,31 +80,21 @@ void blueLight() {
 }
 
 void alarm() {
-  //tone(BUZER_PIN, 262, 500);
-  int frequency = 2000;  // Start with a low frequency
-  int stepSize = 100;  // Increase frequency by this amount each cycle
+  int frequency = 2000;
+  int stepSize = 100; 
   
   for (int x = 0; x < 2; x++) {
-    for (int i = 0; i < 500; i += 100) {  // Loop for the specified duration
-      tone(BUZER_PIN, frequency);  // Generate the square wave tone
-      noStopDelay(50);  // Wait 50 milliseconds before changing the frequency
-      noTone(BUZER_PIN);  // Stop the tone before changing frequency
-      frequency -= stepSize;  // Increase the frequency
-      if (frequency > 2000) {  // If we have reached the maximum frequency, start over at the low frequency
+    for (int i = 0; i < 500; i += 100) {  
+      tone(BUZER_PIN, frequency);  
+      noStopDelay(50);  
+      noTone(BUZER_PIN);  
+      frequency -= stepSize;  
+      if (frequency > 2000) { 
         frequency = 500;
       }
     }
     noTone(BUZER_PIN);
   }
-  
-
-  
-  // tone(BUZER_PIN,494,500); 
-  // noStopDelay(300); 
-  // noTone(BUZER_PIN); 
-  // tone(BUZER_PIN,523,300); 
-  // noStopDelay(100);  
-  // noTone(BUZER_PIN); 
 } 
 
 void noStopDelay(int interval) {
@@ -187,9 +176,7 @@ float calcDistance() {
   digitalWrite(USTRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(USTRIG_PIN, LOW);
-  // Measure the response from the HC-SR04 Echo Pin
   duration = pulseIn(USECHO_PIN, HIGH);
-  // Determine distance from duration ,use 343 metres per second as speed of sound
   tempDistance = (duration / 2) * 0.0343;
   if (tempDistance >= 400 || tempDistance <= 2) {
     return distance;
@@ -201,7 +188,7 @@ float calcDistance() {
 }
 
 float getHeight() {
-  return (DOOR_HEIGHT - distance);
+  return (doorHeight - distance);
 }
 
 float calcBMI() {
@@ -228,17 +215,17 @@ bool getID() {
 }
 
 void splitStringUserInfo(String input) {
-  int currentIndex = 0;  // Initialize the current index to zero
-  while (input.length() > 0) {  // Continue until the input string is empty
-    int delimiterIndex = input.indexOf("|");  // Find the index of the next delimiter
-    if (delimiterIndex == -1) {  // If no delimiter was found, use the remainder of the string
+  int currentIndex = 0;  
+  while (input.length() > 0) {  
+    int delimiterIndex = input.indexOf("|");  
+    if (delimiterIndex == -1) {  
       currentUserInfo[currentIndex] = input;
-      input = "";  // Clear the input string to exit the loop
-    } else {  // If a delimiter was found, extract the token and update the input string
+      input = "";  
+    } else { 
       currentUserInfo[currentIndex] = input.substring(0, delimiterIndex);
       input = input.substring(delimiterIndex + 1);
     }
-    currentIndex++;  // Increment the current index to move to the next element in the array
+    currentIndex++;  
   }
 }
 
@@ -296,13 +283,12 @@ String checkInOut() {
   long waitingStartTime;
   int entrySensorReading = 0;
   int exitSensorReading = 0;
-  distance = DOOR_HEIGHT;
+  distance = doorHeight;
   weight = getWeight();
   do {
     entrySensorReading = analogRead(ENTRY_SENSOR);
     exitSensorReading = analogRead(EXIT_SENSOR);
 
-    // Check if the person entered the room
     if (entrySensorReading < ENTRY_THRESHOLD) {
       Serial.println("Person entered the room! Triggered Entry Point 1");
       waitingStartTime = millis();
@@ -320,7 +306,6 @@ String checkInOut() {
       return "Entry";
     }
 
-    // Check if the person exited the room
     if (exitSensorReading < EXIT_THRESHOLD) {
       Serial.println("Person exited the room! Triggered Exit Point 1");
       waitingStartTime = millis();
@@ -336,7 +321,6 @@ String checkInOut() {
       bmi = calcBMI();
       return "Exit";
     }
-    // Wait a short time before checking again
     if (millis() - startTime >= 5000) {
       return "";
     }
@@ -376,8 +360,8 @@ void loop() {
         offLight();
       } else if (command.indexOf('WeightThresholdUpdate|') != -1) {
         weightThreshold = command.substring(22).toInt();
-        serialOutput = "Weight Threshold Updated to " + String(weightThreshold);
-        Serial.println(serialOutput);
+      } else if (command.indexOf('DoorHeightUpdate|') != -1) {
+        doorHeight = command.substring(17).toInt();
       }
     }
     if (alarmMode) {
