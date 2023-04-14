@@ -127,3 +127,30 @@ class MySQLService:
         count = cursor.rowcount
         cursor.close()
         return count
+    
+    def get_user_access_logs(self):
+        cursor = self.connection.cursor()
+        cursor.execute('''SELECT 
+            ul.unlock_id, 
+            ul.timestamp AS unlock_timestamp, 
+            ul.type AS unlock_type, 
+            ul.status AS unlock_status, 
+            ud.name,
+            ul.key_type,
+            iol.timestamp AS in_out_timestamp, 
+            iol.type AS in_out_type,
+            iol.weight,
+            iol.height,
+            iol.bmi,
+            ra.timestamp AS remote_approval_timestamp, 
+            ra.status AS remote_approval_status, 
+            ud2.name AS remote_approval_user_name
+            FROM unlock_logs AS ul
+            LEFT JOIN in_out_logs AS iol ON ul.unlock_id = iol.unlock_id
+            LEFT JOIN remote_approval AS ra ON ul.unlock_id = ra.unlock_id
+            LEFT JOIN user_details AS ud ON ul.user_id = ud.user_id
+            LEFT JOIN user_details AS ud2 ON ra.user_id = ud2.user_id;'''
+        )
+        result = cursor.fetchall()
+        cursor.close()
+        return result

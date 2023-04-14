@@ -22,3 +22,8 @@ def get_user_health_statistics(conn, id):
     height_value = list(map(lambda x: round(x[3], 2), results))
     bmi_value = list(map(lambda x: round(x[4], 2), results))
     return {"index": index, "weight_value": weight_value, "height_value": height_value, "bmi_value": bmi_value}, 200
+
+@stats_bp.route('/access_logs')
+def get_user_access_logs():
+    with g.dbconn:
+        return g.dbconn.get_user_access_logs()
