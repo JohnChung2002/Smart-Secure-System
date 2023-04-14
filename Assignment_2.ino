@@ -96,7 +96,24 @@ void alarm() {
     }
     noTone(BUZER_PIN);
   }
-} 
+}
+
+void accessGrantedTone() {
+  tone(BUZER_PIN, 440); // 440Hz frequency (A4)
+  noStopDelay(100);
+  tone(BUZER_PIN, 523); // 523Hz frequency (C5)
+  noStopDelay(100);
+  tone(BUZER_PIN, 659); // 659Hz frequency (E5)
+  noStopDelay(100);
+  noTone(BUZER_PIN); // Stop the tone
+}
+
+void accessDeniedTone() {
+  tone(BUZER_PIN, 440, 200); // Play a 440Hz tone for 200ms
+  noStopDelay(200);
+  noTone(BUZER_PIN); // Turn off the tone
+}
+
 
 void noStopDelay(int interval) {
   long startDelayTime = millis();
@@ -145,6 +162,7 @@ bool waitForRemoteApprove() {
 
 void approveAccess() {
   greenLight();
+  accessGrantedTone();
   Serial.println("Access Granted!");
   lcd.clear();
   lcd.print("Access Granted!");
@@ -159,7 +177,7 @@ void denyAccess() {
   lcd.clear();
   lcd.print("Access Denied!");
   redLight();
-  alarm();
+  accessDeniedTone();
   noStopDelay(1000);
 }
 
