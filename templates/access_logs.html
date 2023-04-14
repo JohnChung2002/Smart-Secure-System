@@ -9,7 +9,7 @@
     <div class="container">
         <h1>Access Logs</h1>
         <table id="example" class="display" style="width:100%">
-        
+            
         </table>
     </div>
 {% endblock %}
@@ -18,8 +18,44 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
+        function getAccessLogs(config, value) {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    type: "POST",
+                    url: "/access_logs",
+                    success: function (result) {
+                        resolve(result);
+                    },
+                    error: function (result) {
+                        reject(result);
+                    }
+                });
+            })
+        }
+    </script>
+    <script>
         $(document).ready(function() {
-            let table = new DataTable('#myTable');
+            getAccessLogs().then(function(data) {
+                $('#myTable').DataTable( {
+                    data: data,
+                    columns: [
+                    { title: "Unlock ID" },
+                    { title: "Unlock Timestamp" },
+                    { title: "Unlock Type" },
+                    { title: "Unlock Status" },
+                    { title: "User Name" },
+                    { title: "Key Type" },
+                    { title: "In/Out Timestamp" },
+                    { title: "In/Out Type" },
+                    { title: "Weight" },
+                    { title: "Height" },
+                    { title: "BMI" },
+                    { title: "Remote Approval Timestamp" },
+                    { title: "Remote Approval Status" },
+                    { title: "Remote Approval User Name" }
+                    ]
+                });
+            });
         });
     </script>
 {% endblock %}

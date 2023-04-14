@@ -41,3 +41,14 @@ def configs():
         role=session["user_role"], 
         configs=configs
     ), 200
+
+@dashboard_bp.route('/logs', methods=["GET"])
+@admin_auth_middleware
+def logs():
+    with g.dbconn:
+        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+    return render_template(
+        'access_logs.html', 
+        name=user[1], 
+        role=session["user_role"], 
+    ), 200
