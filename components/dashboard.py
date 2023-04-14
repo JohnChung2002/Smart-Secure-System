@@ -8,8 +8,8 @@ dashboard_bp = Blueprint('dashboard', __name__)
 @auth_middleware
 def index():
     with g.dbconn:
-        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
-        alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])
+        name = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])["name"]
+        alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])["value"]
         health_data = g.dbconn.get_user_average(session["user_id"])
         num_people = g.dbconn.get_by_id("configs", ["config"], ["People in Room"])["value"]
         if health_data["weight"] is not None and health_data["height"] is not None and health_data["bmi"] is not None:
@@ -20,10 +20,10 @@ def index():
         approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     return render_template(
         'dashboard.html', 
-        name=user["name"], 
+        name=name, 
         role=session["user_role"], 
         num_people=num_people,
-        alarm_status=alarm_status["Alarm Status"],
+        alarm_status=alarm_status,
         health_data=health_data,
         approval=approval
     ), 200
@@ -32,11 +32,11 @@ def index():
 @admin_auth_middleware
 def configs():
     with g.dbconn:
-        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+        name = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])["name"]
         configs = g.dbconn.get_all("configs")
     return render_template(
         'configs.html', 
-        name=user["name"], 
+        name=name, 
         role=session["user_role"], 
         configs=configs
     ), 200
@@ -45,9 +45,9 @@ def configs():
 @admin_auth_middleware
 def logs():
     with g.dbconn:
-        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+        name = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])["name"]
     return render_template(
         'access_logs.html', 
-        name=user["name"], 
+        name=name, 
         role=session["user_role"], 
     ), 200
