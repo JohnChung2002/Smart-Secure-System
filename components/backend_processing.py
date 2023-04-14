@@ -59,5 +59,5 @@ def intialise_data(ser):
             continue
         start = time.time()
         while True:
-            if time.time() - start > 1:
+            if time.time() - start > 5:
                 break
