@@ -360,8 +360,12 @@ void loop() {
         offLight();
       } else if (command.indexOf('WeightThresholdUpdate|') != -1) {
         weightThreshold = command.substring(22).toInt();
+        serialOutput = "Weight Threshold Updated to " + String(weightThreshold);
+        Serial.println(serialOutput);
       } else if (command.indexOf('DoorHeightUpdate|') != -1) {
         doorHeight = command.substring(17).toInt();
+        serialOutput = "Door Height Updated to " + String(doorHeight);
+        Serial.println(serialOutput);
       }
     }
     if (alarmMode) {
