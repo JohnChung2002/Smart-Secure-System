@@ -8,7 +8,7 @@ from components.unlocking import unlock_bp
 from components.statistics import stats_bp
 from components.configs import configs_bp
 from components.dashboard import dashboard_bp
-from components.backend_processing import insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, update_person_in_room, check_if_card_exists
+from components.backend_processing import intialise_data, insert_entry_exit, update_alarm_status, insert_unlock_attempt, update_unlock_attempt, update_person_in_room, check_if_card_exists
 
 app = Flask(__name__)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -40,10 +40,6 @@ def read_serial_input():
                 update_unlock_attempt(input, ser)
             if (input[0] == "People"):
                 update_person_in_room(input[1])
-
-sensor_thread = Thread(target=read_serial_input)
-sensor_thread.daemon = True
-sensor_thread.start()
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -79,4 +75,8 @@ def config_name_to_id(config_name):
     return config_name.lower().replace(" ", "-").replace("(", "9").replace(")", "0")
 
 if __name__ == "__main__":
+    intialise_data(ser)
+    sensor_thread = Thread(target=read_serial_input)
+    sensor_thread.daemon = True
+    sensor_thread.start()
     app.run(host="0.0.0.0", port=8080, debug=True)
