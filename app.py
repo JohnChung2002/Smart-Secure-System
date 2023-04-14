@@ -75,8 +75,8 @@ def config_name_to_id(config_name):
     return config_name.lower().replace(" ", "-").replace("(", "9").replace(")", "0")
 
 if __name__ == "__main__":
-    intialise_data(ser)
     sensor_thread = Thread(target=read_serial_input)
     sensor_thread.daemon = True
     sensor_thread.start()
+    intialise_data(ser)
     app.run(host="0.0.0.0", port=8080, debug=True)
