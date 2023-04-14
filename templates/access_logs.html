@@ -1,14 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block title %}Access Logs{% endblock %}
-{% block scripts %}
+{% block head %}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>Access Logs</h1>
-        <table id="example" class="display" style="width:100%">
+        <table id="myTable" class="display" style="width:100%">
             
         </table>
     </div>
@@ -21,7 +21,7 @@
         function getAccessLogs(config, value) {
             return new Promise(function(resolve, reject) {
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     url: "/access_logs",
                     success: function (result) {
                         resolve(result);
@@ -36,6 +36,10 @@
     <script>
         $(document).ready(function() {
             getAccessLogs().then(function(data) {
+                for (let i = 0; i < data.length; i++) {
+                  data[i][1] = new Date(data[i][1]).toLocaleString(); // Unlock timestamp
+                  data[i][7] = new Date(data[i][7]).toLocaleString(); // In/out timestamp
+                }
                 $('#myTable').DataTable( {
                     data: data,
                     columns: [
