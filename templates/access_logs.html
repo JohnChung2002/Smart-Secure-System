@@ -37,32 +37,36 @@
         $(document).ready(function() {
             getAccessLogs().then(function(data) {
             for (let i = 0; i < data.length; i++) {
-              if (data[i][1] != null) {
-                  data[i][1] = new Date(data[i][1]).toLocaleString("en-CA"); // Unlock timestamp
+              if (data[i]["unlock_timestamp"] != null) {
+                  data[i]["unlock_timestamp"] = new Date(data[i]["unlock_timestamp"]).toLocaleString("en-CA");
               }
-              if (data[i][6] != null) {
-                  data[i][6] = new Date(data[i][6]).toLocaleString("en-CA"); // In/out timestamp
+              if (data[i]["in_out_timestamp"] != null) {
+                  data[i]["in_out_timestamp"] = new Date(data[i]["in_out_timestamp"]).toLocaleString("en-CA");
+              }
+              if (data[i]["remote_approval_timestamp"] != null) {
+                  data[i]["remote_approval_timestamp"] = new Date(data[i]["remote_approval_timestamp"]).toLocaleString("en-CA");
               }
             }
-                $('#myTable').DataTable( {
-                    data: data,
-                    columns: [
-                    { title: "Unlock ID" },
-                    { title: "Unlock Timestamp" },
-                    { title: "Unlock Type" },
-                    { title: "Unlock Status" },
-                    { title: "User Name" },
-                    { title: "Key Type" },
-                    { title: "In/Out Timestamp" },
-                    { title: "In/Out Type" },
-                    { title: "Weight" },
-                    { title: "Height" },
-                    { title: "BMI" },
-                    { title: "Remote Approval Timestamp" },
-                    { title: "Remote Approval Status" },
-                    { title: "Remote Approval User Name" }
-                    ]
+                $('#myTable').DataTable({
+                  data: data,
+                  columns: [
+                    { title: "Unlock ID", data: "unlock_id" },
+                    { title: "Unlock Timestamp", data: "unlock_timestamp" },
+                    { title: "Unlock Type", data: "unlock_type" },
+                    { title: "Unlock Status", data: "unlock_status" },
+                    { title: "User Name", data: "name" },
+                    { title: "Key Type", data: "key_type" },
+                    { title: "In/Out Timestamp", data: "in_out_timestamp" },
+                    { title: "In/Out Type", data: "in_out_type" },
+                    { title: "Weight (kg)", data: "weight" },
+                    { title: "Height (cm)", data: "height" },
+                    { title: "BMI", data: "bmi" },
+                    { title: "Remote Approval Timestamp", data: "remote_approval_timestamp" },
+                    { title: "Remote Approval Status", data: "remote_approval_status" },
+                    { title: "Remote Approval User Name", data: "remote_approval_user_name" }
+                  ]
                 });
+
             });
         });
     </script>

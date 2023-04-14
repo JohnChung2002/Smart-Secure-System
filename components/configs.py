@@ -17,6 +17,8 @@ def configs_post():
         count = g.dbconn.update_config(data["config"], data["value"])
         if count == 0:
             return "Invalid config", 400
+        print(data["config"])
+        print(data['value'])
         if data["config"] == "Door Height (cm)":
             g.ser.write(str.encode(f"DoorHeightUpdate|{data['value']}"))
         elif data["config"] == "Weight Threshold (kg)":

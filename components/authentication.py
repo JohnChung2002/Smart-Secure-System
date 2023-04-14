@@ -22,7 +22,7 @@ def login_post():
         result = g.dbconn.get_by_id("user_accounts", ["username"], [username])
         if result is not None:
             try:
-                if ph.verify(result[2], password):
+                if ph.verify(result["password"], password):
                     session["user_id"] = result["user_id"]
                     session["user_role"] = result["role"]
                 return redirect("/")

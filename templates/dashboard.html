@@ -22,7 +22,7 @@
             <h2>Number of persons in room: {{ num_people }}</h2>
             <h2>Status of alarm: <div id="alarm_status">{{ alarm_status }}</div></h2>
             {% if health_data is not none: %}
-              <h2>Height: {{ health_data['height'] }}, Weight: {{ health_data['weight'] }}, BMI: {{ health_data['bmi'] }}</h2>
+              <h2>Height: {{ health_data['height'] }} cm, Weight: {{ health_data['weight'] }} kg, BMI: {{ health_data['bmi'] }}</h2>
             {% endif %}
               <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
             {% if role == 'Admin' %}

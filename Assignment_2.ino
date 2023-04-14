@@ -350,6 +350,8 @@ void loop() {
   do {
     if (Serial.available() != 0) {
       String command = Serial.readString();
+      Serial.println(command);
+      Serial.println(command.indexOf('WeightThresholdUpdate|'));
       if (command == "Alarm On") {
         alarmMode = true;
       } else if (command == "Alarm Off") {
@@ -358,11 +360,15 @@ void loop() {
         startInOutScan();
         waitingForCard = false;
         offLight();
-      } else if (command.indexOf('WeightThresholdUpdate|') != -1) {
+      } else if (command.indexOf("WeightThresholdUpdate|") != -1) {
+        serialOutput = "Weight Threshold original " + String(weightThreshold);
+        Serial.println(serialOutput);
         weightThreshold = command.substring(22).toInt();
         serialOutput = "Weight Threshold Updated to " + String(weightThreshold);
         Serial.println(serialOutput);
-      } else if (command.indexOf('DoorHeightUpdate|') != -1) {
+      } else if (command.indexOf("DoorHeightUpdate|") != -1) {
+        serialOutput = "Door Height original " + String(doorHeight);
+        Serial.println(serialOutput);
         doorHeight = command.substring(17).toInt();
         serialOutput = "Door Height Updated to " + String(doorHeight);
         Serial.println(serialOutput);
