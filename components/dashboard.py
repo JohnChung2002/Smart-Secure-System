@@ -51,3 +51,15 @@ def logs():
         name=name, 
         role=session["user_role"], 
     ), 200
+
+@dashboard_bp.route('/profile', methods=["GET"])
+@auth_middleware
+def profile():
+    with g.dbconn:
+        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+    return render_template(
+        'profile.html', 
+        name=user["name"], 
+        role=session["user_role"], 
+        user=user
+    ), 200

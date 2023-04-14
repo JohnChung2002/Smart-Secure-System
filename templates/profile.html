@@ -1,0 +1,111 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Profile</h1>
+    <div class="row">
+        <div class="col-md-5">
+            <label for="name" class="form-label col-md-8">Name</label>
+            <span id="name-alert" class="d-none"></span>
+            <div class="input-group mb-3 col-md">
+                <input type="text" class="form-control" id="name" name="name" value="{{ user['name'] }}">
+                <button class="input-group-text bg-primary" id="name-btn">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <label for="date_of_birth" class="form-label col-md-8">Date Of Birth</label>
+            <span id="date_of_birth-alert" class="d-none"></span>
+            <div class="input-group mb-3 col-md">
+                <input type="text" class="form-control" id="date_of_birth" date_of_birth="date_of_birth" value="{{ user['date_of_birth'] }}">
+                <button class="input-group-text bg-primary" id="date_of_birth-btn">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <label for="weight" class="form-label col-md-8">Weight</label>
+            <span id="weight-alert" class="d-none"></span>
+            <div class="input-group mb-3 col-md">
+                <input type="text" class="form-control" id="weight" name="weight" value="{{ user['weight'] }}">
+                <button class="input-group-text bg-primary" id="weight-btn">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <label for="height" class="form-label col-md-8">Height</label>
+            <span id="height-alert" class="d-none"></span>
+            <div class="input-group mb-3 col-md">
+                <input type="text" class="form-control" id="height" name="height" value="{{ user['height'] }}">
+                <button class="input-group-text bg-primary" id="height-btn">Update</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <label for="card_id" class="form-label col-md-8">Card ID</label>
+            <span id="card_id-alert" class="d-none"></span>
+            <div class="input-group mb-3 col-md">
+                <input type="text" class="form-control" id="card_id" name="card_id" value="{{ user['card_id'] }}">
+                <button class="input-group-text bg-primary" id="card_id-btn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updateProfile(field, value) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "POST",
+                url: "/profile",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    field: field,
+                    value: value
+                }),
+                success: function (result) {
+                    resolve(result);
+                },
+                error: function (result) {
+                    reject(result);
+                }
+            });
+        })
+    }
+</script>
+{% set fields=["name", "date_of_birth", "weight", "height", "card_id"] %}
+{% for field in fields %}
+<script>
+    $("#{{ field }}-btn").click(function() {
+        updateConfig("{{ field }}", $("#{{ field }}").val()).then(function(result) {
+            $("#{{ field }}-alert").removeClass("d-none");
+            $("#{{ field }}-alert").addClass("text-success");
+            $("#{{ field }}-alert").text("Update Successful!");
+            setTimeout(function() {
+                $("#{{ field }}-alert").addClass("d-none");
+                $("#{{ field }}-alert").removeClass("text-success");
+                $("#{{ field }}-alert").text("");
+            }, 5000);
+        }).catch(function(result) {
+            $("#{{ field }}-alert").removeClass("d-none");
+            $("#{{ field }}-alert").addClass("text-danger");
+            $("#{{ field }}-alert").text("Update Failed!");
+            setTimeout(function() {
+                $("#{{ field }}-alert").addClass("d-none");
+                $("#{{ field }}-alert").removeClass("text-danger");
+                $("#{{ field }}-alert").text("");
+            }, 5000);
+        });
+    });
+</script>
+{% endfor %}
+{% endblock %}

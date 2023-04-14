@@ -21,9 +21,9 @@ def configs_post():
 
 
 
-@configs_bp.route('/profile')
+@configs_bp.route('/profile', methods=["POST"])
 @auth_middleware
-def profile():
+def profile_post():
     data = request.get_json()
     if data is None:
         return "Invalid data", 400
