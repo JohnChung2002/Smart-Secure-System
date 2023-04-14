@@ -36,6 +36,14 @@
     <script>
         $(document).ready(function() {
             getAccessLogs().then(function(data) {
+            for (let i = 0; i < data.length; i++) {
+              if (data[i][1] != null) {
+                  data[i][1] = new Date(data[i][1]).toLocaleString("en-CA"); // Unlock timestamp
+              }
+              if (data[i][6] != null) {
+                  data[i][6] = new Date(data[i][6]).toLocaleString("en-CA"); // In/out timestamp
+              }
+            }
                 $('#myTable').DataTable( {
                     data: data,
                     columns: [
