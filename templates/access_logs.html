@@ -36,10 +36,6 @@
     <script>
         $(document).ready(function() {
             getAccessLogs().then(function(data) {
-                for (let i = 0; i < data.length; i++) {
-                  data[i][1] = new Date(data[i][1]).toLocaleString(); // Unlock timestamp
-                  data[i][7] = new Date(data[i][7]).toLocaleString(); // In/out timestamp
-                }
                 $('#myTable').DataTable( {
                     data: data,
                     columns: [
