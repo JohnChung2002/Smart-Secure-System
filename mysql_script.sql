@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `user_details` (
   `weight` NUMERIC(5,2) NOT NULL,
   `height` NUMERIC(5,2) NOT NULL,
   `card_id` CHAR(8) NOT NULL,
+  `mac_address` CHAR(17) NOT NULL,
   `type` ENUM("Human", "Pet") NOT NULL DEFAULT "Human",
   PRIMARY KEY (`user_id`)
 );

@@ -1,5 +1,19 @@
 from services.mysql_service import MySQLService
+from scapy.all import *
+from device import *
 import time
+
+def check_mac_addresses(mac: str):
+    dev = device()
+    gateway = dev[8]+"/24"
+    eth = Ether(dst="FF:FF:FF:FF:FF:FF")
+    arp = ARP(pdst=gateway)
+    divided = eth/arp
+    answ = srp(divided, timeout=0.5, verbose=False)[0] # '0.5' because of double attempts per second 
+    for res in answ:
+        if str(res[1].hwsrc).upper() == mac.upper():
+            return True
+    return False
 
 def check_if_card_exists(card_id, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
@@ -28,9 +42,17 @@ def insert_unlock_attempt(sensor_data, ser):
         sensor_data.append(None)
         sensor_data.append(None)
     with db:
+        if sensor_data[2] == "Pending":
+            mac_address = db.get_by_id("user_details", ["user_id"], [sensor_data[3]])['mac_address']
+            if (check_mac_addresses(mac_address)):
+                sensor_data[2] = "Success"
         db.insert("unlock_logs", ["type", "status", "user_id", "key_type"], [sensor_data[1], sensor_data[2], sensor_data[3], sensor_data[4]])
         unlock_id = db.get_last_entry("unlock_logs", "unlock_id")["unlock_id"]
         ser.write(str.encode(str(unlock_id)))
+        if sensor_data[2] == "Success":
+            ser.write(b"Approved")
+        
+    
 
 def update_unlock_attempt(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
