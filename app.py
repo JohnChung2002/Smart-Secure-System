@@ -37,7 +37,7 @@ def read_serial_input():
             if (input[0] == "Request"):
                 check_if_card_exists(input[1], ser)
             if (input[0] == "Update"):
-                update_unlock_attempt(input, ser)
+                update_unlock_attempt(input)
             if (input[0] == "People"):
                 update_person_in_room(input[1])
 
