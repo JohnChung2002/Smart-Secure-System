@@ -54,26 +54,26 @@ def approval_get():
         "status": True,
         "message": "Pending approval",
         "unlock_id": unlock_id,
-        "script": '''
-            $('#approveButton').click(function () {
-                $.ajax({
+        "script": f'''
+            $('#approveButton').click(function () {{
+                $.ajax({{
                     type: "GET",
                     url: '/approve/{unlock_id}',
-                    success: function (data) {
+                    success: function (data) {{
                         $('#approvalAlert').addClass("d-none");
                         $("#approveButton").off('click');  
-                    }
-                });
-            });
-            $('#rejectButton').click(function () {
-                $.ajax({
+                    }}
+                }});
+            }});
+            $('#rejectButton').click(function () {{
+                $.ajax({{
                     type: "GET",
                     url: '/reject/{unlock_id}',
-                    success: function (data) {
+                    success: function (data) {{
                         $('#approvalAlert').addClass("d-none");
                         $("#rejectButton").off('click'); 
-                    }
-                });
-            });
+                    }}
+                }});
+            }});
         '''
     }, 200
