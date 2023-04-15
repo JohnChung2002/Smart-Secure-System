@@ -50,6 +50,10 @@ def insert_unlock_attempt(sensor_data, ser):
         unlock_id = db.get_last_entry("unlock_logs", "unlock_id")["unlock_id"]
         ser.write(str.encode(str(unlock_id)))
         if sensor_data[2] == "Success":
+            start = time.time()
+            while True:
+                if time.time() - start > 2:
+                    break
             ser.write(b"Approved")
 
 def update_unlock_attempt(sensor_data):
@@ -79,5 +83,5 @@ def intialise_data(ser):
             continue
         start = time.time()
         while True:
-            if time.time() - start > 5:
+            if time.time() - start > 2:
                 break
