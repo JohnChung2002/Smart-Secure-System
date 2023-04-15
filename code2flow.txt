@@ -1,0 +1,68 @@
+function AccessGranted {
+  Display "Access Granted" on LCD, Light Up Green LED and Unlock Door;
+  while (Door Open and 5 seconds have not passed since last person walked through) {
+    Scan Weight and Height People Walking Through and Send Data to Edge Device;
+  }
+  Lock Door;
+  
+}
+
+function AccessDenied {
+  Invalid Tries++;
+  Display "Access Denied!" on LCD, Light Up Red LED and lay Access Denied Sound;
+}
+
+
+Start;
+while loop {
+  Off LED;
+  if Invalid Tries >= 3 and Alarm Mode Off {
+    Activated Alarm Mode;
+  }
+  if Serial Input Detected {
+    if (Serial Input = "Alarm On") {
+      Activate Alarm Mode;
+    } else if (Serial Input = "Alarm Off") {
+      Deactivate Alarm Mode and set Invalid Tries = 0;
+    } else if (Serial Input = "Remote Unlock") {
+      Unlock Door;
+    } else if (Serial Input has "WeightThresholdUpdate") {
+      Update Weight Threshold;
+    } else if (Serial Input has "DoorHeightUpdate") {
+      Update Door Height;
+    }
+  }
+  if Waiting For Card {
+    Display "Waiting For Card" on LCD and Lock Door (if Door Open);
+  }
+  if Card Scanned {
+    if Card is Exit {
+      Call AccessGranted;
+    } else {
+      Send Card ID to Edge Device to check if Valid;
+      if Card ID is Valid {
+        Light Up Yellow LED and Display "Waiting for approval" on LCD;
+        if (Weight match the registered user) {
+          Call AccessGranted;
+        } else {
+          while (Edge Device has not responded) {
+            if (Serial Input = "Approved") {
+              Call AccessGranted;
+              break;
+            } else {
+              Call AccessDenied;
+              break;
+            }
+            if (30 seconds passed since start of waiting) {
+              Call AccessDenied;
+              break;
+            }
+          }
+        }
+      } else {
+        Call AccessDenied;
+      }
+    }
+  }
+}
+End; 
