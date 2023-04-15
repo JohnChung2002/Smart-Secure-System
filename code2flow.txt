@@ -66,3 +66,48 @@ while loop {
   }
 }
 End; 
+
+
+Start;
+while loop {
+  branch(Background_Serial_Read) [Background] {
+    switch(Serial Input) {
+      case Entry or Exit:
+        Insert Entry or Exit information into Database;
+        break;
+      case Alarm:
+        Update Alarm Status in Database;
+        break;
+      case Unlock:
+        Create and insert unlock attempt into Database;
+        break;
+      case Update:
+        Update unlock attempt status in Database;
+        break;
+      case People:
+        Increment People in Room count in Database;
+        break;
+    }
+  }
+  branch(Flask_Web_Server) [Active] {
+    switch(Web Path) {
+      case "/":
+        Display Home Page;
+        break;
+      case "/login":
+        Display Login Page;
+        break;
+      case "/logout":
+        Log user out and redirect to "/login";
+        break;
+      case "profile":
+        Display Profile Page;
+        break;
+      case "/access_logs":
+        Display Access Logs Page;
+        break;
+    }
+  }
+  join(Background_Serial_Read, Flask_Web_Server);
+}
+End;

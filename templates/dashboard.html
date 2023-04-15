@@ -5,8 +5,7 @@
 {% block content %}
 <div class="container mt-4">
     <!-- Conditional row showing approve/reject -->
-    {% if approval is not none: %}
-    <div class="row" id="approvalAlert">
+    <div class="row" id="approvalAlert" class="d-none">
         <div class="col-md-6">
             <div class="alert" role="alert">
                 There is a approval request for the room.
@@ -16,7 +15,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
     <div class="row">
         <div class="col-md-6">
             <h2>Number of persons in room: {{ num_people }}</h2>
@@ -39,23 +37,22 @@
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/health_chart.js') }}"></script>
-<script>
+<script id="">
+    let unlock_id;
     $(function () {
-        $('#alarmButton').click(function () {
-            $.get('/alarm', function (data) {
-                $('#alarm_status').text(data);
+        setInterval(function () {
+            $.get('/approval', function (data) {
+                if (data.status) {
+                    if (unlock_id != data.unlock_id) {
+                        unlock_id = data.unlock_id;
+                        $('#approvalAlert').removeClass("d-none");
+                        eval(data.script);
+                    }
+                } else {
+                    $('#approvalAlert').addClass("d-none");
+                }
             });
-        });
-        $('#approveButton').click(function () {
-            $.get('/approve/{{ approval["unlock_id"] }}', function (data) {
-                $('#approvalAlert').addClass("d-none");
-            });
-        });
-        $('#rejectButton').click(function () {
-            $.get('/reject/{{ approval["unlock_id"] }}', function (data) {
-                $('#approvalAlert').addClass("d-none");
-            });
-        });
+        }, 1000);
     });
 </script>
 {% if role == 'Admin' %}

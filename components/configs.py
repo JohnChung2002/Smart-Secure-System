@@ -38,3 +38,40 @@ def profile_post():
         if count == 0:
             return "Invalid data", 400
     return "Success", 200
+
+@configs_bp.route('/approval', methods=["GET"])
+@auth_middleware
+def approval_get():
+    approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
+    if approval is None:
+        return {
+            "status": False,
+            "message": "No pending approvals"
+        }, 200
+    unlock_id = approval["unlock_id"]
+    return {
+        "status": True,
+        "message": "Pending approval",
+        "unlock_id": unlock_id,
+        "script": '''
+            $(function () {
+                $('#alarmButton').click(function () {
+                    $.get('/alarm', function (data) {
+                        $('#alarm_status').text(data);
+                    });
+                });
+                $('#approveButton').click(function () {
+                    $.get('/approve/{unlock_id}', function (data) {
+                        $('#approvalAlert').addClass("d-none");
+                        $("#approveButton").off('click');  
+                    });
+                });
+                $('#rejectButton').click(function () {
+                    $.get('/reject/{unlock_id}', function (data) {
+                        $('#approvalAlert').addClass("d-none");
+                        $("#rejectButton").off('click'); 
+                    });
+                });
+            });
+        '''
+    }, 200
