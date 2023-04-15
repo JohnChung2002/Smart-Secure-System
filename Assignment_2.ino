@@ -325,6 +325,7 @@ String checkInOut() {
       bmi = calcBMI();
       personInside = true;
       personCount += 1;
+      noStopDelay(300);
       return "Entry";
     }
 
@@ -341,6 +342,7 @@ String checkInOut() {
       personCount -= 1;
       height = getHeight();
       bmi = calcBMI();
+      noStopDelay(300);
       return "Exit";
     }
     if (millis() - startTime >= 5000) {
