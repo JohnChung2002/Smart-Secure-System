@@ -167,7 +167,10 @@ void approveAccess() {
   lcd.clear();
   lcd.print("Access Granted!");
   lcd.setCursor(0, 1); 
-  lcd.print("Welcome John!");
+  if (currentUserInfo[1] != "") {
+    serialOutput = "Welcome " + currentUserInfo[1] + "!";
+    lcd.print(serialOutput);
+  }
   doorServo.write(180);
   noStopDelay(1000);
 }
