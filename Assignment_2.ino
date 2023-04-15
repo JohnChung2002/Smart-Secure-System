@@ -150,7 +150,7 @@ bool waitForRemoteApprove() {
       waitingForInput = false;
       return status; 
     }
-    if (millis() - startTime >= 10000) {
+    if (millis() - startTime >= 30000) {
       denyAccess();
       waitingForInput = false;
       serialOutput = "Update|Failed|" + String(unlockID); 

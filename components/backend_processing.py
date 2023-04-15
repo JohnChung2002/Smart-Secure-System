@@ -51,8 +51,6 @@ def insert_unlock_attempt(sensor_data, ser):
         ser.write(str.encode(str(unlock_id)))
         if sensor_data[2] == "Success":
             ser.write(b"Approved")
-        
-    
 
 def update_unlock_attempt(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
