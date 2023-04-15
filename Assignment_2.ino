@@ -290,7 +290,7 @@ void startInOutScan() {
     if (entryExitStatus == "Entry" || entryExitStatus == "Exit") {
       serialOutput = entryExitStatus + "|" + String(weight) + "|" + String(height) + "|" + String(bmi);
       Serial.println(serialOutput);
-      noStopDelay(500);
+      noStopDelay(1000);
     }
   }
   serialOutput = "People|" + String(personCount);
