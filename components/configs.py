@@ -42,7 +42,8 @@ def profile_post():
 @configs_bp.route('/approval', methods=["GET"])
 @auth_middleware
 def approval_get():
-    approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
+    with g.dbconn:
+        approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     if approval is None:
         return {
             "status": False,
