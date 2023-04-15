@@ -40,16 +40,29 @@
 <script id="">
     let unlock_id;
     $(function () {
+        $('#alarmButton').click(function () {
+            $.ajax({
+                type: "GET",
+                url: '/alarm',
+                success: function (data) {
+                    $('#alarm_status').text(data);
+                }
+            });
+        });
         setInterval(function () {
-            $.get('/approval', function (data) {
-                if (data.status) {
-                    if (unlock_id != data.unlock_id) {
-                        unlock_id = data.unlock_id;
-                        $('#approvalAlert').removeClass("d-none");
-                        eval(data.script);
+            $.ajax({
+                url: '/approval',
+                type: 'GET',
+                success: function (data) {
+                    if (data.status) {
+                        if (unlock_id != data.unlock_id) {
+                            unlock_id = data.unlock_id;
+                            $('#approvalAlert').removeClass("d-none");
+                            eval(data.script);
+                        }
+                    } else {
+                        $('#approvalAlert').addClass("d-none");
                     }
-                } else {
-                    $('#approvalAlert').addClass("d-none");
                 }
             });
         }, 1000);
@@ -59,8 +72,15 @@
 <script>
     $(function () {
         $('#unlockButton').click(function () {
-            $.get('/unlock', function (data) {
-                console.log("Unlocked");
+            $.ajax({
+                url: '/unlock',
+                type: 'GET',
+                success: function(data) {
+                    console.log("Unlocked");
+                },
+                error: function(error) {
+                    console.log(error);
+                }
             });
         });
     });

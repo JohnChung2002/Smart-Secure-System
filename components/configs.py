@@ -55,23 +55,24 @@ def approval_get():
         "message": "Pending approval",
         "unlock_id": unlock_id,
         "script": '''
-            $(function () {
-                $('#alarmButton').click(function () {
-                    $.get('/alarm', function (data) {
-                        $('#alarm_status').text(data);
-                    });
-                });
-                $('#approveButton').click(function () {
-                    $.get('/approve/{unlock_id}', function (data) {
+            $('#approveButton').click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/approve/{unlock_id}',
+                    success: function (data) {
                         $('#approvalAlert').addClass("d-none");
                         $("#approveButton").off('click');  
-                    });
+                    }
                 });
-                $('#rejectButton').click(function () {
-                    $.get('/reject/{unlock_id}', function (data) {
+            });
+            $('#rejectButton').click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/reject/{unlock_id}',
+                    success: function (data) {
                         $('#approvalAlert').addClass("d-none");
                         $("#rejectButton").off('click'); 
-                    });
+                    }
                 });
             });
         '''
