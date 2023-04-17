@@ -37,6 +37,8 @@ def profile_post():
         count = g.dbconn.update_profile(session["user_id"], data["field"], data["value"])
         if count == 0:
             return "Invalid data", 400
+        if data["field"] == "height" or data["field"] == "weight":
+            g.dbconn.update_bmi(session["user_id"])
     return "Success", 200
 
 @configs_bp.route('/approval', methods=["GET"])
