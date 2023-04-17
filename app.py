@@ -29,24 +29,21 @@ app.register_blueprint(dashboard_bp)
 def read_serial_input():
     while True:
         if (ser.in_waiting > 0):
-            try:
-                temp = ser.readline()
-                print(f"Received from Arduino {temp}")
-                input = temp.decode('utf-8').rstrip().split("|")
-                if (input[0] == "Entry" or input[0] == "Exit"):
-                    insert_entry_exit(input)
-                if (input[0] == "Alarm"):
-                    update_alarm_status(input)
-                if (input[0] == "Unlock"):
-                    insert_unlock_attempt(input, ser)
-                if (input[0] == "Request"):
-                    check_if_card_exists(input[1], ser)
-                if (input[0] == "Update"):
-                    update_unlock_attempt(input)
-                if (input[0] == "People"):
-                    update_person_in_room(input[1])
-            except:
-                pass
+            temp = ser.readline()
+            print(f"Received from Arduino {temp}")
+            input = temp.decode('utf-8').rstrip().split("|")
+            if (input[0] == "Entry" or input[0] == "Exit"):
+                insert_entry_exit(input)
+            if (input[0] == "Alarm"):
+                update_alarm_status(input)
+            if (input[0] == "Unlock"):
+                insert_unlock_attempt(input, ser)
+            if (input[0] == "Request"):
+                check_if_card_exists(input[1], ser)
+            if (input[0] == "Update"):
+                update_unlock_attempt(input)
+            if (input[0] == "People"):
+                update_person_in_room(input[1])
 
 @app.errorhandler(404)
 def page_not_found(e):
