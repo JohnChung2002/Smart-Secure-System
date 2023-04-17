@@ -20,40 +20,42 @@
             <h2>Number of persons in room: {{ num_people }}</h2>
             <h2>Status of alarm: <span id="alarm_status">{{ alarm_status }}</span></h2>
             {% if health_data is not none: %}
-            <table class="table">
-                <thead>
-                  <tr>
-                    <th>Recorded Data</th>
-                    <th>vs</th>
-                    <th>Scanned Data</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{{ recorded_data["weight"] }}</td>
-                    <td>Weight</td>
-                    <td>{{ health_data["weight"] }}</td>
-                  </tr>
-                  <tr>
-                    <td>{{ recorded_data["height"] }}</td>
-                    <td>Height</td>
-                    <td>{{ health_data["height"] }}</td>
-                  </tr>
-                  <tr>
-                    <td>{{ (recorded_data["weight"] / (recorded_data["height"]/100)**2)|round(2) }}</td>
-                    <td>BMI</td>
-                    <td>{{ health_data["bmi"] }}</td>
-                  </tr>
-                </tbody>
-              </table> 
+            <div class="table">
+                <table class="table-responsive text-center">
+                    <thead>
+                      <tr>
+                        <th>Recorded Data</th>
+                        <th>vs</th>
+                        <th>Scanned Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ recorded_data["weight"] }}</td>
+                        <td>Weight</td>
+                        <td>{{ health_data["weight"] }}</td>
+                      </tr>
+                      <tr>
+                        <td>{{ recorded_data["height"] }}</td>
+                        <td>Height</td>
+                        <td>{{ health_data["height"] }}</td>
+                      </tr>
+                      <tr>
+                        <td>{{ (recorded_data["weight"] / (recorded_data["height"]/100)**2)|round(2) }}</td>
+                        <td>BMI</td>
+                        <td>{{ health_data["bmi"] }}</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+            </div>
               {% if health_data["bmi"] < 18.5 %}
-                 <div class="text-danger">You are underweight!</div>
+                 <div class="text-danger fw-bold h5">You are underweight!</div>
               {% elif health_data["bmi"] >= 18.5 and health_data["bmi"] < 25 %}
-                 <div class="text-success">You are healthy!</div>
+                 <div class="text-success fw-bold h5">You are healthy!</div>
               {% elif health_data["bmi"] >= 25 and health_data["bmi"] < 30 %}
-                 <div class="text-danger">You are overweight!</div>
+                 <div class="text-danger fw-bold h5">You are overweight!</div>
               {% else %}
-                 <div class="text-danger">You are obese!</div>
+                 <div class="text-danger fw-bold h5">You are obese!</div>
               {% endif %}
             {% endif %}
             <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
