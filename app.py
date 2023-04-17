@@ -15,6 +15,10 @@ ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 ser.reset_input_buffer()
 app.secret_key = "E2DAD46AF8783EB848129379F1328"
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 app.register_blueprint(auth_bp)
 app.register_blueprint(alarm_bp)
 app.register_blueprint(unlock_bp)
