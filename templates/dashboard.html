@@ -16,13 +16,38 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <h2>Number of persons in room: {{ num_people }}</h2>
-            <h2>Status of alarm: <div id="alarm_status">{{ alarm_status }}</div></h2>
+            <h2>Status of alarm: <span id="alarm_status">{{ alarm_status }}</span></h2>
             {% if health_data is not none: %}
-              <h2>Height: {{ health_data['height'] }} cm, Weight: {{ health_data['weight'] }} kg, BMI: {{ health_data['bmi'] }}</h2>
+            <table>
+                <thead>
+                  <tr>
+                    <th>Recorded Data</th>
+                    <th>vs</th>
+                    <th>Scanned Data</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ recorded_data["weight"] }}</td>
+                    <td>Weight</td>
+                    <td>{{ health_data["weight"] }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ recorded_data["height"] }}</td>
+                    <td>Height</td>
+                    <td>{{ health_data["height"] }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ recorded_data["bmi"] }}</td>
+                    <td>BMI</td>
+                    <td>{{ health_data["bmi"] }}</td>
+                  </tr>
+                </tbody>
+              </table>              
             {% endif %}
-              <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
+            <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
             {% if role == 'Admin' %}
               <button class="btn btn-success" id="unlockButton">Remote Unlock</button>
             {% endif %}

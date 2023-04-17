@@ -8,7 +8,12 @@ dashboard_bp = Blueprint('dashboard', __name__)
 @auth_middleware
 def index():
     with g.dbconn:
-        name = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])["name"]
+        user = g.dbconn.get_by_id("user_details", ["user_id"], [session["user_id"]])
+        recorded_data = {
+            "weight":  user["weight"],
+            "height":  user["height"],
+            "bmi":  user["bmi"],
+        }
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])["value"]
         health_data = g.dbconn.get_user_average(session["user_id"])
         num_people = g.dbconn.get_by_id("configs", ["config"], ["People in Room"])["value"]
@@ -20,10 +25,11 @@ def index():
         approval = g.dbconn.get_last_entry_by_id("unlock_logs", ["status"], "timestamp", ["Pending"])
     return render_template(
         'dashboard.html', 
-        name=name, 
+        name=user["name"], 
         role=session["user_role"], 
         num_people=num_people,
         alarm_status=alarm_status,
+        recorded_data=recorded_data,
         health_data=health_data,
         approval=approval
     ), 200
