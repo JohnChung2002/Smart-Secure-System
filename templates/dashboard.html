@@ -49,13 +49,13 @@
                   </table> 
             </div>
               {% if health_data["bmi"] < 18.5 %}
-                 <div class="text-danger fw-bold h5">You are underweight!</div>
+                 <div class="text-danger fw-bold h5 mb-3">You are underweight!</div>
               {% elif health_data["bmi"] >= 18.5 and health_data["bmi"] < 25 %}
-                 <div class="text-success fw-bold h5">You are healthy!</div>
+                 <div class="text-success fw-bold h5 mb-3">You are healthy!</div>
               {% elif health_data["bmi"] >= 25 and health_data["bmi"] < 30 %}
-                 <div class="text-danger fw-bold h5">You are overweight!</div>
+                 <div class="text-danger fw-bold h5 mb-3">You are overweight!</div>
               {% else %}
-                 <div class="text-danger fw-bold h5">You are obese!</div>
+                 <div class="text-danger fw-bold h5 mb-3">You are obese!</div>
               {% endif %}
             {% endif %}
             <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
