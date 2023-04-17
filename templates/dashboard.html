@@ -32,17 +32,17 @@
                     <tbody>
                       <tr>
                         <td>{{ recorded_data["weight"] }}</td>
-                        <td>Weight</td>
+                        <td class="fw-bold">Weight</td>
                         <td>{{ health_data["weight"] }}</td>
                       </tr>
                       <tr>
                         <td>{{ recorded_data["height"] }}</td>
-                        <td>Height</td>
+                        <td class="fw-bold">Height</td>
                         <td>{{ health_data["height"] }}</td>
                       </tr>
                       <tr>
                         <td>{{ (recorded_data["weight"] / (recorded_data["height"]/100)**2)|round(2) }}</td>
-                        <td>BMI</td>
+                        <td class="fw-bold">BMI</td>
                         <td>{{ health_data["bmi"] }}</td>
                       </tr>
                     </tbody>
