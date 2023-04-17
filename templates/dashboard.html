@@ -20,7 +20,7 @@
             <h2>Number of persons in room: {{ num_people }}</h2>
             <h2>Status of alarm: <span id="alarm_status">{{ alarm_status }}</span></h2>
             {% if health_data is not none: %}
-            <table>
+            <table class="table">
                 <thead>
                   <tr>
                     <th>Recorded Data</th>
@@ -40,7 +40,7 @@
                     <td>{{ health_data["height"] }}</td>
                   </tr>
                   <tr>
-                    <td>{{ recorded_data["weight"] / (recorded_data["height"]/100)**2 }}</td>
+                    <td>{{ (recorded_data["weight"] / (recorded_data["height"]/100)**2)|round(2) }}</td>
                     <td>BMI</td>
                     <td>{{ health_data["bmi"] }}</td>
                   </tr>
