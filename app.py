@@ -30,7 +30,7 @@ def read_serial_input():
     while True:
         if (ser.in_waiting > 0):
             temp = ser.readline()
-            print(temp)
+            print(f"Received from Arduino {temp}")
             input = temp.decode('utf-8').rstrip().split("|")
             if (input[0] == "Entry" or input[0] == "Exit"):
                 insert_entry_exit(input)
