@@ -170,9 +170,3 @@ class MySQLService:
         count = cursor.rowcount
         cursor.close()
         return count
-        
-    def update_bmi(self, user_id: int):
-        cursor = self.connection.cursor(dictionary=True)
-        cursor.execute(f"UPDATE user_details SET bmi = weight / (height/100.0)^2 WHERE user_id = %s;", [user_id])
-        self.connection.commit()
-        cursor.close()

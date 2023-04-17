@@ -12,7 +12,6 @@ def index():
         recorded_data = {
             "weight":  user["weight"],
             "height":  user["height"],
-            "bmi":  user["bmi"],
         }
         alarm_status = g.dbconn.get_by_id("configs", ["config"], ["Alarm Status"])["value"]
         health_data = g.dbconn.get_user_average(session["user_id"])
