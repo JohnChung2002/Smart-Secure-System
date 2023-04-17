@@ -91,23 +91,138 @@ while loop {
   }
   branch(Flask_Web_Server) [Active] {
     switch(Web Path) {
-      case "/":
+      case "/" ["GET"]:
         Display Home Page;
         break;
-      case "/login":
+      case "/login" ["GET"]:
         Display Login Page;
         break;
-      case "/logout":
+      case "/logout" ["GET"]:
         Log user out and redirect to "/login";
         break;
-      case "profile":
+      case "profile"  ["GET"]:
         Display Profile Page;
         break;
-      case "/access_logs":
+      case "/access_logs" ["GET"] (Admin Only):
         Display Access Logs Page;
+        break;
+      case "/config" ["GET"] (Admin Only):
+        Display Config Page;
         break;
     }
   }
-  join(Background_Serial_Read, Flask_Web_Server);
+  branch(Flask_API_Server) {
+    switch(Web Path) {
+      case "/login"  ["POST"]:
+        Authenticates User Details;
+        if (valid) {
+          Redirect to "/";
+        } else {
+          Redirect to "/login";
+        }
+        break;
+      case "/health_statistics" ["GET"]:
+        Returns User Height, Weight and BMI;
+        break;
+      case "/profile" ["POST"]:
+        Updates the profile information;
+        break;
+      case "/config" ["POST"]:
+        Updates the system configs;
+        break;
+      case "/approve/<id>" ["GET"]:
+        Approves the unlock request for the specified id;
+        break;
+      case "/reject/<id>" ["GET"]:
+        Rejects the unlock request for the specified id;
+        break;
+      case "/alarm" ["GET"]:
+        Toggle the alarm;
+        break;
+      case "/unlock" ["GET"] (Admin Only):
+        Remotely unlock the lock;
+        break;
+    }
+  }
 }
-End;
+End; 
+
+
+function CheckSerialInput {
+  switch(Serial Input) {
+    case Entry or Exit:
+      Insert Entry or Exit information into Database;
+      break;
+    case Alarm:
+      Update Alarm Status in Database;
+      break;
+    case Unlock:
+      Create and insert unlock attempt into Database;
+      break;
+    case Update:
+      Update unlock attempt status in Database;
+      break;
+    case People:
+      Increment People in Room count in Database;
+      break;
+  }
+}
+
+
+function Flask Api Server {
+  switch(Web Path) {
+      case "/login"  ["POST"]:
+        Authenticates User Details;
+        if (valid) {
+          Redirect to "/";
+        } else {
+          Redirect to "/login";
+        }
+        break;
+      case "/health_statistics" ["GET"]:
+        Returns User Height, Weight and BMI;
+        break;
+      case "/profile" ["POST"]:
+        Updates the profile information;
+        break;
+      case "/config" ["POST"]:
+        Updates the system configs;
+        break;
+      case "/approve/<id>" ["GET"]:
+        Approves the unlock request for the specified id;
+        break;
+      case "/reject/<id>" ["GET"]:
+        Rejects the unlock request for the specified id;
+        break;
+      case "/alarm" ["GET"]:
+        Toggle the alarm;
+        break;
+      case "/unlock" ["GET"] (Admin Only):
+        Remotely unlock the lock;
+        break;
+    }
+}
+
+
+function Flask Web Server {
+  switch(Web Path) {
+      case "/" ["GET"]:
+        Display Home Page;
+        break;
+      case "/login" ["GET"]:
+        Display Login Page;
+        break;
+      case "/logout" ["GET"]:
+        Log user out and redirect to "/login";
+        break;
+      case "profile"  ["GET"]:
+        Display Profile Page;
+        break;
+      case "/access_logs" ["GET"] (Admin Only):
+        Display Access Logs Page;
+        break;
+      case "/config" ["GET"] (Admin Only):
+        Display Config Page;
+        break;
+    }
+}

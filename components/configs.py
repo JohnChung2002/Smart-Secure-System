@@ -31,7 +31,7 @@ def profile_post():
         return "Invalid data", 400
     if "field" not in data or "value" not in data:
         return "Invalid data", 400
-    if data["field"] not in ["name", "date_of_birth", "weight", "height", "card_id"]:
+    if data["field"] not in ["name", "date_of_birth", "weight", "height", "card_id", "mac_address"]:
         return "Invalid data", 400
     with g.dbconn:
         count = g.dbconn.update_profile(session["user_id"], data["field"], data["value"])
