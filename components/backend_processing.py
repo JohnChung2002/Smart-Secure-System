@@ -12,6 +12,7 @@ def check_mac_addresses(mac: str):
     answ = srp(divided, timeout=0.5, verbose=False)[0] # '0.5' because of double attempts per second 
     for res in answ:
         if str(res[1].hwsrc).upper() == mac.upper():
+            print("Found the user's device!")
             return True
     return False
 

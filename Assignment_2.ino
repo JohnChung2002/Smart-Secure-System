@@ -423,6 +423,7 @@ void loop() {
         if (checkIDInDatabase()) {
           yellowLight();
           if (weightCheck()) {
+            Serial.println("Weight matched user! Unlocking now!");
             startInOutScan();
           } else {
             if (waitForRemoteApprove()) {
