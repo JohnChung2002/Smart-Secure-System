@@ -104,6 +104,7 @@
                 type: 'GET',
                 success: function (data) {
                     if (data.status) {
+                        console.log(data.unlock_id)
                         if (unlock_id != data.unlock_id && data.unlock_id != undefined) {
                             unlock_id = data.unlock_id;
                             $('#approvalAlert').removeClass("d-none");
