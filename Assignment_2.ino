@@ -95,19 +95,19 @@ void alarm() {
 }
 
 void accessGrantedTone() {
-  tone(BUZER_PIN, 440); // 440Hz frequency (A4)
+  tone(BUZER_PIN, 440);
   noStopDelay(100);
-  tone(BUZER_PIN, 523); // 523Hz frequency (C5)
+  tone(BUZER_PIN, 523); 
   noStopDelay(100);
-  tone(BUZER_PIN, 659); // 659Hz frequency (E5)
+  tone(BUZER_PIN, 659); 
   noStopDelay(100);
-  noTone(BUZER_PIN); // Stop the tone
+  noTone(BUZER_PIN); 
 }
 
 void accessDeniedTone() {
-  tone(BUZER_PIN, 440, 200); // Play a 440Hz tone for 200ms
+  tone(BUZER_PIN, 440, 200); 
   noStopDelay(200);
-  noTone(BUZER_PIN); // Turn off the tone
+  noTone(BUZER_PIN);
 }
 
 
@@ -209,6 +209,12 @@ float getHeight() {
   return (doorHeight - distance);
 }
 
+bool weightCheck() {
+  float userWeight = currentUserInfo[3].toFloat();
+  weight = getWeight();
+  return (weight >= userWeight - weightThreshold && weight <= userWeight + weightThreshold);
+}
+
 float calcBMI() {
   if (height != NAN) {
     return (weight / pow((height/100), 2));
@@ -271,12 +277,6 @@ bool checkIDInDatabase() {
       return false;
     }
   }  
-}
-
-bool weightCheck() {
-  float userWeight = currentUserInfo[3].toFloat();
-  weight = getWeight();
-  return (weight >= userWeight - weightThreshold && weight <= userWeight + weightThreshold);
 }
 
 void startInOutScan() {
