@@ -15,8 +15,7 @@ def login():
 def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
-    
-    print(g.dbconn)
+
     with g.dbconn:
         ph = PasswordHasher()
         result = g.dbconn.get_by_id("user_accounts", ["username"], [username])
