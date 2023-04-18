@@ -4,8 +4,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 
-#define BUTTON_PIN 1
-
 #define RED_PIN 2
 #define GREEN_PIN 3
 #define BLUE_PIN 4
@@ -349,7 +347,6 @@ String checkInOut() {
 }
 
 void setup() {
-  pinMode(BUTTON_PIN, INPUT);
   pinMode(RED_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(BLUE_PIN, OUTPUT);
