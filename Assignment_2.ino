@@ -28,12 +28,9 @@
 
 byte readCard[4];
 String ExitTag = "A6D715E";
-String tagID = "";
-bool personInside = false;
 int personCount = 0;
-String serialInput = "";
-String serialOutput = "";
-String entryExitStatus = "";
+String tagID, serialInput, serialOutput, entryExitStatus;
+bool personInside = false;
 bool cardScanned = false;
 bool waitingForCard = false;
 bool waitingForInput = false;
@@ -50,33 +47,33 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 Servo doorServo;
 
 void offLight() {
-  digitalWrite(RED_PIN, LOW);
-  digitalWrite(GREEN_PIN, LOW);
-  digitalWrite(BLUE_PIN, LOW);
+  analogWrite(RED_PIN, 0);
+  analogWrite(GREEN_PIN, 0);
+  analogWrite(BLUE_PIN, 0);
 }
 
 void redLight() {
-  digitalWrite(RED_PIN, HIGH);
-  digitalWrite(GREEN_PIN, LOW);
-  digitalWrite(BLUE_PIN, LOW);
+  analogWrite(RED_PIN, 255);
+  analogWrite(GREEN_PIN, 0);
+  analogWrite(BLUE_PIN, 0);
 }
 
 void yellowLight() {
-  digitalWrite(RED_PIN, HIGH);
-  digitalWrite(GREEN_PIN, HIGH);
-  digitalWrite(BLUE_PIN, LOW);
+  analogWrite(RED_PIN, 255);
+  analogWrite(GREEN_PIN, 255);
+  analogWrite(BLUE_PIN, 0);
 }
 
 void greenLight() {
-  digitalWrite(RED_PIN, LOW);
-  digitalWrite(GREEN_PIN, HIGH);
-  digitalWrite(BLUE_PIN, LOW);
+  analogWrite(RED_PIN, 0);
+  analogWrite(GREEN_PIN, 255);
+  analogWrite(BLUE_PIN, 0);
 }
 
 void blueLight() {
-  digitalWrite(RED_PIN, LOW);
-  digitalWrite(GREEN_PIN, LOW);
-  digitalWrite(BLUE_PIN, HIGH);
+  analogWrite(RED_PIN, 0);
+  analogWrite(GREEN_PIN, 0);
+  analogWrite(BLUE_PIN, 255);
 }
 
 void alarm() {
