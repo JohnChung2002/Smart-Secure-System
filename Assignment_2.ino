@@ -25,7 +25,7 @@
 #define EXIT_THRESHOLD 200 
 
 byte readCard[4];
-String ExitTag = "A60D715E";
+String ExitTag = "A6D715E";
 int personCount = 0;
 String tagID, serialInput, serialOutput, entryExitStatus;
 bool cardScanned = false;
