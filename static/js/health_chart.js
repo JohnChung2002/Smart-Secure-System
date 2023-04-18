@@ -50,7 +50,7 @@ function initialiseHealthCharts() {
             }
         };
 
-        var chart = new ApexCharts(document.getElementById("#healthChart"), options);
+        var chart = new ApexCharts(document.getElementById("healthChart"), options);
         chart.render();
     });
 }
