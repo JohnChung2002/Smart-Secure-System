@@ -17,7 +17,8 @@ function initialiseHealthCharts() {
     getHealthStatistics().then(function (data) {
         var options = {
             chart: {
-                type: 'line'
+                type: 'line',
+                height: 500
             },
             series: [{
                 name: 'Height (cm)',
