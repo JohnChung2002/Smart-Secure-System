@@ -15,60 +15,43 @@ function getHealthStatistics() {
 
 function initialiseHealthCharts() {
     getHealthStatistics().then(function (data) {
-        var ctx = document.getElementById('healthChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: data.index,
-                datasets: [{
-                    label: 'Height (cm)',
-                    data: data.height_value,
-                    borderColor: 'red',
-                    fill: false
-                    }, {
-                        label: 'Weight (kg)',
-                        data: data.weight_value,
-                        borderColor: 'blue',
-                        fill: false
-                    }, {
-                        label: 'BMI',
-                        data: data.bmi_value,
-                        borderColor: 'green',
-                        fill: false
-                    }
-                ]},
-                options: {
-                responsive: true,
+        var options = {
+            chart: {
+                height: 400,
+                type: 'line'
+            },
+            series: [{
+                name: 'Height (cm)',
+                data: data.height_value
+            }, {
+                name: 'Weight (kg)',
+                data: data.weight_value
+            }, {
+                name: 'BMI',
+                data: data.bmi_value
+            }],
+            xaxis: {
+                categories: data.index,
                 title: {
-                    display: true,
-                    text: 'Health Statistics'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false
-                },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                scales: {
-                    x: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
-                    },
-                    y: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Value'
-                        }
-                    }
+                    text: 'Date'
                 }
+            },
+            yaxis: {
+                title: {
+                    text: 'Value'
+                }
+            },
+            title: {
+                text: 'Health Statistics'
+            },
+            tooltip: {
+                intersect: false,
+                shared: true
             }
-        });
+        };
+
+        var chart = new ApexCharts(document.querySelector("#healthChart"), options);
+        chart.render();
     });
 }
 
