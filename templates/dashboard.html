@@ -58,7 +58,11 @@
                  <div class="text-danger fw-bold h5 mb-3">You are obese!</div>
               {% endif %}
             {% endif %}
-            <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
+            {% if alarmStatus == 'Off' %}
+                <button class="btn btn-danger" id="alarmButton">Trigger Alarm</button>
+            {% else %}
+                <button class="btn btn-primary" id="alarmButton">Off Alarm</button>
+            {% endif %}
             {% if role == 'Admin' %}
               <button class="btn btn-success" id="unlockButton">Remote Unlock</button>
             {% endif %}
@@ -82,6 +86,15 @@
                 url: '/alarm',
                 success: function (data) {
                     $('#alarm_status').text(data);
+                    if (data == 'Off') {
+                        $('#alarmButton').addClass('btn-danger');
+                        $('#alarmButton').removeClass('btn-primary');
+                        $('#alarmButton').text('Trigger Alarm');
+                    } else {
+                        $('#alarmButton').addClass('btn-primary');
+                        $('#alarmButton').removeClass('btn-danger');
+                        $('#alarmButton').text('Off Alarm');
+                    }
                 }
             });
         });
