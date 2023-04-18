@@ -17,7 +17,6 @@ function initialiseHealthCharts() {
     getHealthStatistics().then(function (data) {
         var options = {
             chart: {
-                height: 400,
                 type: 'line'
             },
             series: [{
