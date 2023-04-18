@@ -1,6 +1,6 @@
 from services.mysql_service import MySQLService
-from scapy.all import *
-from device import *
+from scapy.all import Ether, ARP
+from device import device, srp
 import time
 
 def check_mac_addresses(mac: str):
