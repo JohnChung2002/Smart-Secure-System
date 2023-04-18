@@ -25,10 +25,9 @@
 #define EXIT_THRESHOLD 200 
 
 byte readCard[4];
-String ExitTag = "A6D715E";
+String ExitTag = "A60D715E";
 int personCount = 0;
 String tagID, serialInput, serialOutput, entryExitStatus;
-bool personInside = false;
 bool cardScanned = false;
 bool waitingForCard = false;
 bool waitingForInput = false;
@@ -319,7 +318,6 @@ String checkInOut() {
       Serial.println("Triggered Entry Point 2");
       height = getHeight();
       bmi = calcBMI();
-      personInside = true;
       personCount += 1;
       return "Entry";
     }
