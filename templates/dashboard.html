@@ -78,7 +78,7 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="{{ url_for('static', filename='js/health_chart.js') }}"></script>
 <script id="">
-    let unlock_id;
+    let unlock_id = null;
     $(function () {
         $('#alarmButton').click(function () {
             $.ajax({
@@ -104,7 +104,7 @@
                 type: 'GET',
                 success: function (data) {
                     if (data.status) {
-                        if (unlock_id != data.unlock_id) {
+                        if (unlock_id != data.unlock_id && data.unlock_id != null) {
                             unlock_id = data.unlock_id;
                             $('#approvalAlert').removeClass("d-none");
                             eval(data.script);
