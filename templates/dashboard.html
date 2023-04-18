@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-4">
     <!-- Conditional row showing approve/reject -->
-    <div class="row" id="approvalAlert" class="d-none">
+    <div class="row d-none" id="approvalAlert">
         <div class="col-md-6">
             <div class="alert" role="alert">
                 There is a approval request for the room.
@@ -78,7 +78,7 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="{{ url_for('static', filename='js/health_chart.js') }}"></script>
 <script id="">
-    let unlock_id = null;
+    let unlock_id;
     $(function () {
         $('#alarmButton').click(function () {
             $.ajax({
@@ -104,8 +104,7 @@
                 type: 'GET',
                 success: function (data) {
                     if (data.status) {
-                        console.log(data.unlock_id)
-                        if (unlock_id != data.unlock_id && data.unlock_id != undefined) {
+                        if (unlock_id != data.unlock_id) {
                             unlock_id = data.unlock_id;
                             $('#approvalAlert').removeClass("d-none");
                             eval(data.script);
