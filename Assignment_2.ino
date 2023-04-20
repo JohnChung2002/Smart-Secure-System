@@ -420,6 +420,8 @@ void loop() {
           yellowLight();
           if (weightCheck()) {
             Serial.println("Weight matched user! Unlocking now!");
+            serialOutput = "Unlock|Entry|Success|" + currentUserInfo[1] + "|Card";
+            Serial.println(serialOutput);
             startInOutScan();
           } else {
             if (waitForRemoteApprove()) {
