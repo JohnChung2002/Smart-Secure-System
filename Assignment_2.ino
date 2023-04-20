@@ -292,6 +292,8 @@ void startInOutScan() {
   memset(currentUserInfo, 0, sizeof(currentUserInfo));
   personCount = 0;
   alarmMode = false;
+  serialOutput = "Alarm|Off";
+  Serial.println(serialOutput);
   invalidTries = 0;
 }
 
@@ -365,6 +367,8 @@ void loop() {
   do {
     if (invalidTries >= 3 && alarmMode == false) {
       alarmMode = true;
+      serialOutput = "Alarm|On";
+      Serial.println(serialOutput);
     }
     if (Serial.available() != 0) {
       String command = Serial.readString();
