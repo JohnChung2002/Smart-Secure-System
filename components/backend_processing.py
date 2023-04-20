@@ -35,7 +35,7 @@ def insert_entry_exit(sensor_data):
 def update_alarm_status(sensor_data):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
     with db:
-        db.update("configs", ["value", "config"], ["alarm_status"], [sensor_data[1]])
+        db.update("configs", ["value"], ["config"], [sensor_data[1], "Alarm Status"])
 
 def insert_unlock_attempt(sensor_data, ser):
     db = MySQLService('localhost', 'pi', 'pi', 'smart_lock_system')
